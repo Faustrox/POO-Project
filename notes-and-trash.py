@@ -11,3 +11,15 @@
 #
 # for entry in board:
 #     print(entry)
+
+# When someone insert 0 to the destination it gonna comeback to select other piece
+
+border = {"A": {1: [1, 1], 2: [1, 2], 3: [1, 2]}}
+input = "A2"
+fila = int(input[1])
+columna = input[0]
+
+pawn = border[columna][fila]
+
+print(columna, fila)
+print(pawn)
