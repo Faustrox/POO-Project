@@ -75,6 +75,9 @@ class board():
 
 
 board = board()
+# END OF THE BOARD
+
+# Pieces
 
 
 class piece():
