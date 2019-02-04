@@ -76,7 +76,6 @@ class board():
 
 board = board()
 
-
 class piece():
 
     def __init__(self, team, pos):
@@ -143,10 +142,16 @@ class rook(piece):
 
 
 class queen(piece):
+
+
     def __str__(self):  # function para que no imprima en lenguaje maquina
-        return "Q"
+           return "Q"
 
 
 class king(piece):  # PROGRESS
     def __str__(self):  # function para que no imprima en lenguaje maquina
-        return "K"
+        return "K" 
+
+board.show()
+board.fill()
+
