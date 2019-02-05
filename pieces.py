@@ -11,14 +11,7 @@ class board():
                       ["7\t", "■", " ", "■", " ", "■", " ", "■", " "],
                       ["8\t", " ", "■", " ", "■", " ", "■", " ", "■"]]
 
-        self.position = {"A": {1: [1, 1], 2: [1, 2], 3: [1, 3], 4: [1, 4], 5: [1, 5], 6: [1, 6], 7: [1, 7], 8: [1, 8]},
-                         "B": {1: [2, 1], 2: [2, 2], 3: [2, 3], 4: [2, 4], 5: [2, 5], 6: [2, 6], 7: [2, 7], 8: [2, 8]},
-                         "C": {1: [3, 1], 2: [3, 2], 3: [3, 3], 4: [3, 4], 5: [3, 5], 6: [3, 6], 7: [3, 7], 8: [3, 8]},
-                         "D": {1: [4, 1], 2: [4, 2], 3: [4, 3], 4: [4, 4], 5: [4, 5], 6: [4, 6], 7: [4, 7], 8: [4, 8]},
-                         "E": {1: [5, 1], 2: [5, 2], 3: [5, 3], 4: [5, 4], 5: [5, 5], 6: [5, 6], 7: [5, 7], 8: [5, 8]},
-                         "F": {1: [6, 1], 2: [6, 2], 3: [6, 3], 4: [6, 4], 5: [6, 5], 6: [6, 6], 7: [6, 7], 8: [6, 8]},
-                         "G": {1: [7, 1], 2: [7, 2], 3: [7, 3], 4: [7, 4], 5: [7, 5], 6: [7, 6], 7: [7, 7], 8: [7, 8]},
-                         "H": {1: [8, 1], 2: [8, 2], 3: [8, 3], 4: [8, 4], 5: [8, 5], 6: [8, 6], 7: [8, 7], 8: [8, 8]}}
+        self.positionY = {"A": 1, "B": 2, "C": 3, "D": 4, "E": 5, "F": 6, "G": 7, "H": 8}
 
     def show(self):
         for entry in self.board:
@@ -27,51 +20,79 @@ class board():
 
     def fill(self):  # entra las piezas(objetos) al tablero.
 
-        # entra los peones, de ambos equipos.
+        white = {"pawns": {}, "knight": {}, "bishoop": {}, "rook": {}, "queen": {}, "king": {}}
+        black = {"pawns": {}, "knight": {}, "bishoop": {}, "rook": {}, "queen": {}, "king": {}}
+        number = 1
+
         for fila in range(1, 3):
             for columna in range(1, 9):
                 if (fila == 1):
                     if (columna == 1 or columna == 8):
-                        self.board[fila][columna] = rook(
-                            "white", [fila, columna])  # torres
+                        if 1 not in black["rook"]:
+                            number = 1
+                        else:
+                            number = 2
+
+                        black["rook"][number] = rook("black", [fila, columna])  # torres
+
                     if (columna == 2 or columna == 7):
-                        self.board[fila][columna] = knight(
-                            "white", [fila, columna])  # caballo de trolla
+                        if 1 not in black["knight"]:
+                            number = 1
+                        else:
+                            number = 2
+
+                        black["knight"][number] = rook(
+                            "black", [fila, columna])  # caballo de trolla
+
                     if (columna == 3 or columna == 6):
-                        self.board[fila][columna] = bishoop(
-                            "white", [fila, columna])  # alfil
+                        if 1 not in black["bishoop"]:
+                            number = 1
+                        else:
+                            number = 2
+
+                        black["bishoop"][number] = rook("black", [fila, columna])  # alfil
+
                     if (columna == 4):
-                        self.board[fila][columna] = queen(
-                            "white", [fila, columna])  # reina
+                        black["queen"][1] = rook("black", [fila, columna])   # reina
+
                     if (columna == 5):
-                        self.board[fila][columna] = king(
-                            "white", [fila, columna])  # rey
+                        black["king"][1] = rook("black", [fila, columna])  # rey
+
                 if (fila == 2):
-                    self.board[fila][columna] = pawn(
-                        "white", [fila, columna])  # peones
+                    black["pawns"][columna] = pawn("black", [fila, pawn])  # peones
 
         for fila in range(7, 9):
             for columna in range(1, 9):
                 if (fila == 8):
                     if (columna == 1 or columna == 8):
-                        self.board[fila][columna] = rook(
-                            "black", [fila, columna])  # torres
+                        if 1 not in black["rook"]:
+                            number = 1
+                        else:
+                            number = 2
+
+                        white["rook"][number] = rook("white", [fila, columna])  # torres
                     if (columna == 2 or columna == 7):
-                        self.board[fila][columna] = knight(
-                            "black", [fila, columna])  # caballo
+                        if 1 not in black["knight"]:
+                            number = 1
+                        else:
+                            number = 2
+
+                        white["knight"][number] = knight(
+                            "white", [fila, columna])  # caballo de trolla
                     if (columna == 3 or columna == 6):
-                        self.board[fila][columna] = bishoop(
-                            "black", [fila, columna])  # alfil
-                    if (columna == 5):
-                        self.board[fila][columna] = queen(
-                            "black", [fila, columna])  # reina
+                        if 1 not in black["bishoop"]:
+                            number = 1
+                        else:
+                            number = 2
+
+                        white["bishoop"][number] = bishoop("white", [fila, columna])  # alfil
                     if (columna == 4):
-                        self.board[fila][columna] = king(
-                            "black", [fila, columna])  # rey
+                        white["queen"][1] = queen("white", [fila, columna])   # reina
+                    if (columna == 5):
+                        white["king"][1] = king("white", [fila, columna])  # rey
 
                 if (fila == 7):
-                    self.board[fila][columna] = pawn(
-                        "black", [fila, columna])  # peones
+                    white["pawns"][columna] = pawn("white", [fila, pawn])  # peones
 
 
 board = board()
@@ -84,6 +105,7 @@ class piece():
 
     def __init__(self, team, pos):
         self.pos = pos
+        self.pos_name = ""
         self.team = team
 
     def __eat(self, pos_enemy):
@@ -93,8 +115,11 @@ class piece():
 
         if pos2 in array:
 
-            if pos2 == "Piece":
-                print("EAT!")
+            if board[pos2] != " " or board[pos2] != "■":
+                # It's a piece, can eat
+                __eat(pos2)
+
+            self.pos = pos2
 
         elif pos2 not in array:
 
@@ -114,8 +139,18 @@ class pawn(piece):
             possible = self.pos
             possible[1] += 1
             array.append(possible)
+
             if self.first_turn is True:
                 possible[1] += 1
+                array.append(possible)
+
+        if self.team == "white":
+            possible = self.pos
+            possible[1] -= 1
+            array.append(possible)
+
+            if self.first_turn is True:
+                possible[1] -= 1
                 array.append(possible)
         return array
 
