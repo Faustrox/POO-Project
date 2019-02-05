@@ -18,7 +18,7 @@ class board():
             print(entry[0], entry[1], entry[2], entry[3],
                   entry[4], entry[5], entry[6], entry[7], entry[8])
 
-    def PROGRESS(self):  # entra las piezas(objetos) al tablero.
+    def fill(self):  # entra las piezas(objetos) al tablero.
 
         white = {"pawns": {}, "knight": {}, "bishoop": {}, "rook": {}, "queen": {}, "king": {}}
         black = {"pawns": {}, "knight": {}, "bishoop": {}, "rook": {}, "queen": {}, "king": {}}
@@ -117,7 +117,6 @@ class piece():
 
     def __init__(self, team, pos):
         self.pos = pos
-        self.pos_name = ""
         self.team = team
 
     def __eat(self, pos_enemy):
