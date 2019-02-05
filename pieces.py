@@ -138,8 +138,10 @@ class piece():
                 while k <= 5:
                     if (isinstance(j,pieces_name[k])) == True:
                         if j.team == "white":
+                            print("hola")
                             array.append(self.positionY[j.pos[1]] + self.positionX[j.pos[0]])
-                    k += 1        
+                    k += 1
+            
         return array      
     
                     
