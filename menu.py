@@ -24,7 +24,9 @@ def menu():
 
         if option == 1:
             # CLEAR
+            print("The board was created\n")
             pieces.board.fill()
+            pieces.board.show()
             break
 
         else:
