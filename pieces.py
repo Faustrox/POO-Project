@@ -18,7 +18,7 @@ class board():
             print(entry[0], entry[1], entry[2], entry[3],
                   entry[4], entry[5], entry[6], entry[7], entry[8])
 
-    def fill(self):  # entra las piezas(objetos) al tablero.
+    def PROGRESS(self):  # entra las piezas(objetos) al tablero.
 
         white = {"pawns": {}, "knight": {}, "bishoop": {}, "rook": {}, "queen": {}, "king": {}}
         black = {"pawns": {}, "knight": {}, "bishoop": {}, "rook": {}, "queen": {}, "king": {}}
@@ -32,7 +32,7 @@ class board():
                             number = 1
                         else:
                             number = 2
-
+                        self.board[fila][columna] = "R"  # torres
                         black["rook"][number] = rook("black", [fila, columna])  # torres
 
                     if (columna == 2 or columna == 7):
@@ -41,7 +41,8 @@ class board():
                         else:
                             number = 2
 
-                        black["knight"][number] = rook(
+                        self.board[fila][columna] = "K"  # torres
+                        black["knight"][number] = knight(
                             "black", [fila, columna])  # caballo de trolla
 
                     if (columna == 3 or columna == 6):
@@ -50,15 +51,19 @@ class board():
                         else:
                             number = 2
 
-                        black["bishoop"][number] = rook("black", [fila, columna])  # alfil
+                        self.board[fila][columna] = "B"  # torres
+                        black["bishoop"][number] = bishoop("black", [fila, columna])  # alfil
 
                     if (columna == 4):
-                        black["queen"][1] = rook("black", [fila, columna])   # reina
+                        self.board[fila][columna] = "Q"  # torres
+                        black["queen"][1] = queen("black", [fila, columna])   # reina
 
                     if (columna == 5):
-                        black["king"][1] = rook("black", [fila, columna])  # rey
+                        self.board[fila][columna] = "K"  # torres
+                        black["king"][1] = king("black", [fila, columna])  # rey
 
                 if (fila == 2):
+                    self.board[fila][columna] = "P"  # torres
                     black["pawns"][columna] = pawn("black", [fila, pawn])  # peones
 
         for fila in range(7, 9):
@@ -70,6 +75,7 @@ class board():
                         else:
                             number = 2
 
+                        self.board[fila][columna] = "R"  # torres
                         white["rook"][number] = rook("white", [fila, columna])  # torres
                     if (columna == 2 or columna == 7):
                         if 1 not in black["knight"]:
@@ -77,6 +83,7 @@ class board():
                         else:
                             number = 2
 
+                        self.board[fila][columna] = "K"  # torres
                         white["knight"][number] = knight(
                             "white", [fila, columna])  # caballo de trolla
                     if (columna == 3 or columna == 6):
@@ -85,13 +92,18 @@ class board():
                         else:
                             number = 2
 
+                        self.board[fila][columna] = "B"  # torres
                         white["bishoop"][number] = bishoop("white", [fila, columna])  # alfil
                     if (columna == 4):
+                        self.board[fila][columna] = "Q"  # torres
                         white["queen"][1] = queen("white", [fila, columna])   # reina
+
                     if (columna == 5):
+                        self.board[fila][columna] = "K"  # torres
                         white["king"][1] = king("white", [fila, columna])  # rey
 
                 if (fila == 7):
+                    self.board[fila][columna] = "P"  # torres
                     white["pawns"][columna] = pawn("white", [fila, pawn])  # peones
 
 
@@ -120,6 +132,8 @@ class piece():
                 __eat(pos2)
 
             self.pos = pos2
+
+            # PROGRESS
 
         elif pos2 not in array:
 

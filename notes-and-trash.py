@@ -128,3 +128,8 @@ positionY = {"A": 1, "B": 2, "C": 3, "D": 4, "E": 5, "F": 6, "G": 7, "H": 8}
 print(board_Game[7][positionY["A"]])
 
 print(positionY.len())
+
+
+print(black["pawn"][1].pos)
+
+black["pawn"][1].pos = [1, 4]
