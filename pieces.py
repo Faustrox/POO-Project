@@ -170,9 +170,8 @@ class queen(piece):
            return "Q"
 
     def posible_move(self):
- 
-        
-        pass
+         piece.move_posible()
+
         
 class king(piece):  # PROGRESS
     def __str__(self):  # function para que no imprima en lenguaje maquina
