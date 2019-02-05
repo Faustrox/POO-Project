@@ -118,6 +118,7 @@ class piece():
     def __init__(self, team, pos):
         self.pos = pos
         self.team = team
+
         self.positionX = {1: "1", 2: "2", 3: "3", 4: "4", 5: "5", 6: "6", 7: "7", 8: "8"}
         self.positionY = {1: "A", 2: "B", 3: "C", 4: "D", 5: "E", 6: "F", 7: "G", 8: "H"}
 
@@ -143,8 +144,10 @@ class piece():
     def move_posible(self):
         pieces_name = [pawn, knight, bishoop, rook, queen, king]
         array = []
+
         # return movimientos imposibles ya que no puedes-
         # ocupar el espacio de una ficha de tu mismo team
+
         for i in board.board:
             for j in i:
                 k = 0
@@ -211,10 +214,10 @@ class rook(piece):
 
 class queen(piece):
 
-    def __init__(self, pos, team):
+   def __init__(self, pos, team):
         super().__init__(pos, team)
 
-    def __str__(self):  # function para que no imprima en lenguaje maquina
+   def __str__(self):  # function para que no imprima en lenguaje maquina
         return "Q"
 
     def posible_move(self):
@@ -223,9 +226,11 @@ class queen(piece):
 
 class king(piece):  # PROGRESS
     def __str__(self):  # function para que no imprima en lenguaje maquina
-        return "K"
+
+   return "K"
 
 
 piece = piece("white", [1, 1])
+
 board.fill()
 print(piece.move_posible())
