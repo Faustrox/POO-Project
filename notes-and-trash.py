@@ -101,7 +101,7 @@ board_Game = [[" \t", "A", "B", "C", "D", "E", "F", "G", "H\n"],
 #
 #     # if the pawn is in the second possible_move
 #     try:
-#         if board[x + 2][y] == "" and x == 1 and board[x + 1][y] == "":
+#         if board[x + 2][y] == " " and x == 1 and board[x + 1][y] == "":
 #             possible_move.append([[x + 2], [y]])
 #
 #         pass
