@@ -1,6 +1,7 @@
 class board():
 
     def __init__(self):
+        # Diseno del tablero donde iran las piezas
         self.board = [[" \t", "A", "B", "C", "D", "E", "F", "G", "H\n"],
                       ["1\t", "■", " ", "■", " ", "■", " ", "■", " "],
                       ["2\t", " ", "■", " ", "■", " ", "■", " ", "■"],
@@ -10,10 +11,11 @@ class board():
                       ["6\t", " ", "■", " ", "■", " ", "■", " ", "■"],
                       ["7\t", "■", " ", "■", " ", "■", " ", "■", " "],
                       ["8\t", " ", "■", " ", "■", " ", "■", " ", "■"]]
-
+        # Se le da valor a las posiciones para leer las columnas
         self.positionY = {"A": 1, "B": 2, "C": 3, "D": 4, "E": 5, "F": 6, "G": 7, "H": 8}
 
     def show(self):
+        # Muestra los objetos en el tablero
         for entry in self.board:
             print(entry[0], entry[1], entry[2], entry[3],
                   entry[4], entry[5], entry[6], entry[7], entry[8])
@@ -32,8 +34,8 @@ class board():
                             number = 1
                         else:
                             number = 2
-                        self.board[fila][columna] = "R"  # torres
                         black["rook"][number] = rook("black", [fila, columna])  # torres
+                        self.board[fila][columna] = black["rook"][number]  # torres
 
                     if (columna == 2 or columna == 7):
                         if 1 not in black["knight"]:
@@ -41,9 +43,9 @@ class board():
                         else:
                             number = 2
 
-                        self.board[fila][columna] = "K"  # torres
                         black["knight"][number] = knight(
                             "black", [fila, columna])  # caballo de trolla
+                        self.board[fila][columna] = black["knight"][number]  # caballo
 
                     if (columna == 3 or columna == 6):
                         if 1 not in black["bishoop"]:
@@ -51,20 +53,20 @@ class board():
                         else:
                             number = 2
 
-                        self.board[fila][columna] = "B"  # torres
                         black["bishoop"][number] = bishoop("black", [fila, columna])  # alfil
+                        self.board[fila][columna] = black["bishoop"][number]  # alfil
 
                     if (columna == 4):
-                        self.board[fila][columna] = "Q"  # torres
                         black["queen"][1] = queen("black", [fila, columna])   # reina
+                        self.board[fila][columna] = black["queen"][1]  # reina
 
                     if (columna == 5):
-                        self.board[fila][columna] = "K"  # torres
                         black["king"][1] = king("black", [fila, columna])  # rey
+                        self.board[fila][columna] = black["king"][1]  # rey
 
                 if (fila == 2):
-                    self.board[fila][columna] = "P"  # torres
-                    black["pawns"][columna] = pawn("black", [fila, pawn])  # peones
+                    black["pawns"][columna] = pawn("black", [fila, columna])  # peones
+                    self.board[fila][columna] = black["pawns"][columna]  # peones
 
         for fila in range(7, 9):
             for columna in range(1, 9):
@@ -75,36 +77,36 @@ class board():
                         else:
                             number = 2
 
-                        self.board[fila][columna] = "R"  # torres
                         white["rook"][number] = rook("white", [fila, columna])  # torres
+                        self.board[fila][columna] = white["rook"][number]  # torres
                     if (columna == 2 or columna == 7):
                         if 1 not in black["knight"]:
                             number = 1
                         else:
                             number = 2
 
-                        self.board[fila][columna] = "K"  # torres
                         white["knight"][number] = knight(
                             "white", [fila, columna])  # caballo de trolla
+                        self.board[fila][columna] = white["knight"][number]  # torres
                     if (columna == 3 or columna == 6):
                         if 1 not in black["bishoop"]:
                             number = 1
                         else:
                             number = 2
 
-                        self.board[fila][columna] = "B"  # torres
                         white["bishoop"][number] = bishoop("white", [fila, columna])  # alfil
+                        self.board[fila][columna] = white["bishoop"][number]  # torres
                     if (columna == 4):
-                        self.board[fila][columna] = "Q"  # torres
                         white["queen"][1] = queen("white", [fila, columna])   # reina
+                        self.board[fila][columna] = white["queen"][1]  # torres
 
                     if (columna == 5):
-                        self.board[fila][columna] = "K"  # torres
                         white["king"][1] = king("white", [fila, columna])  # rey
+                        self.board[fila][columna] = white["king"][1]  # torres
 
                 if (fila == 7):
-                    self.board[fila][columna] = "P"  # torres
-                    white["pawns"][columna] = pawn("white", [fila, pawn])  # peones
+                    white["pawns"][columna] = pawn("white", [fila, columna])  # peones
+                    self.board[fila][columna] = white["pawns"][columna]  # torres
 
 
 board = board()
@@ -152,7 +154,7 @@ class piece():
             for j in i:
                 k = 0
                 while k <= 5:
-                    if (isinstance(j, pieces_name[k])) == True:
+                    if (isinstance(j, pieces_name[k])) is True:
                         if j.team == "white":
                             print("hola")
                             array.append(self.positionY[j.pos[1]] + self.positionX[j.pos[0]])
@@ -175,7 +177,7 @@ class pawn(piece):
 
     def possible_move(self):
         array = []
-
+        # verifica  n
         if self.team == "black":
             possible = self.pos
             possible[1] += 1
@@ -204,7 +206,7 @@ class knight(piece):
     # A knight (in spanish called horse), it can do a move of L in any directions
     # A knight can... like jump others pieces
     def __str__(self):  # function para que no imprima en lenguaje maquina
-        return "K"
+        return "H"
 
 
 class bishoop(piece):
@@ -222,10 +224,10 @@ class rook(piece):
 
 class queen(piece):
 
-   def __init__(self, pos, team):
+    def __init__(self, pos, team):
         super().__init__(pos, team)
 
-   def __str__(self):  # function para que no imprima en lenguaje maquina
+    def __str__(self):  # function para que no imprima en lenguaje maquina
         return "Q"
 
     def posible_move(self):
@@ -234,11 +236,4 @@ class queen(piece):
 
 class king(piece):  # PROGRESS
     def __str__(self):  # function para que no imprima en lenguaje maquina
-
-   return "K"
-
-
-piece = piece("white", [1, 1])
-
-board.fill()
-print(piece.move_posible())
+        return "K"
