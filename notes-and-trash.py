@@ -1,3 +1,5 @@
+import pieces
+
 # board = [[" ", "A", "B", "C", "D", "E", "F", "G", "H"],
 #          ["1", "R", "K", "B", "Q", "Kg", "B", "K", "R"],
 #          ["2", "p", "p", "p", "p", "p", "p", "p", "p"],
@@ -74,6 +76,7 @@
 #
 # print(position["H"][2])
 # # Tabla vacia
+
 # board_Empty = [[" \t", "A", "B", "C", "D", "E", "F", "G", "H\n"],
 #                ["1\t", "■", " ", "■", " ", "■", " ", "■", " "],
 #                ["2\t", " ", "■", " ", "■", " ", "■", " ", "■"],
@@ -84,15 +87,15 @@
 #                ["7\t", "■", " ", "■", " ", "■", " ", "■", " "],
 #                ["8\t", " ", "■", " ", "■", " ", "■", " ", "■"]]
 # # TABLA CON LOS OBJETOS
-board_Game = [[" \t", "A", "B", "C", "D", "E", "F", "G", "H\n"],
-              ["1\t", "R", "K", "F", "K", "Q", "F", "K", "R"],
-              ["2\t", "P", "P", "P", "P", "P", "P", "P", "P"],
-              ["3\t", "■", " ", "■", " ", "■", " ", "■", " "],
-              ["4\t", " ", "■", " ", "■", " ", "■", " ", "■"],
-              ["5\t", "■", " ", "■", " ", "■", " ", "■", " "],
-              ["6\t", " ", "■", " ", "■", " ", "■", " ", "■"],
-              ["7\t", "P", "P", "P", "P", "P", "P", "P", "P"],
-              ["8\t", "R", "K", "F", "Q", "K", "F", "K", "R"]]
+# board_Game = [[" \t", "A", "B", "C", "D", "E", "F", "G", "H\n"],
+#               ["1\t", "R", "K", "F", "K", "Q", "F", "K", "R"],
+#               ["2\t", "P", "P", "P", "P", "P", "P", "P", "P"],
+#               ["3\t", "■", " ", "■", " ", "■", " ", "■", " "],
+#               ["4\t", " ", "■", " ", "■", " ", "■", " ", "■"],
+#               ["5\t", "■", " ", "■", " ", "■", " ", "■", " "],
+#               ["6\t", " ", "■", " ", "■", " ", "■", " ", "■"],
+#               ["7\t", "P", "P", "P", "P", "P", "P", "P", "P"],
+#               ["8\t", "R", "K", "F", "Q", "K", "F", "K", "R"]]
 # # WHITE AND BLACK
 #
 # if board[x][y] == "pawn":
@@ -123,13 +126,28 @@ board_Game = [[" \t", "A", "B", "C", "D", "E", "F", "G", "H\n"],
 #
 # print(dic["pawn"][1])
 
-positionY = {"A": 1, "B": 2, "C": 3, "D": 4, "E": 5, "F": 6, "G": 7, "H": 8}
+# positionY = {"A": 1, "B": 2, "C": 3, "D": 4, "E": 5, "F": 6, "G": 7, "H": 8}
+#
+# print(board_Game[7][positionY["A"]])
+#
+# print(positionY.len())
+#
+#
+# print(black["pawn"][1].pos)
 
-print(board_Game[7][positionY["A"]])
+# black["pawn"][1].pos = [1, 4]
 
-print(positionY.len())
+# pos1 = "A1"
+# pos1 = [positionY[pos1[0]], int(pos1[1])]
+# print(pos1)
 
 
-print(black["pawn"][1].pos)
+pawn1 = pieces.pawn("black",[2, 1])
 
-black["pawn"][1].pos = [1, 4]
+
+pieces.board.game_board[2][1] = pawn1
+pieces.board.show()
+
+pawn1.move(pieces.board, pawn1.possible_move(pieces.board), "A4")
+
+pieces.board.show()
