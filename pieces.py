@@ -154,15 +154,33 @@ class piece():
         for i in board.board:
             for j in i:
                 k = 0
+<<<<<<< HEAD
                 while k <= len(pieces_name) - 1:
+=======
+                while k <= 5:
+>>>>>>> develop
                     if (isinstance(j, pieces_name[k])) is True:
                         if j.team == "white":
+                            print("hola")
                             array.append(self.positionY[j.pos[1]] + self.positionX[j.pos[0]])
                     k += 1
+<<<<<<< HEAD
         return array
 
 
 
+=======
+<<<<<<< HEAD
+            
+        return array      
+    
+                    
+=======
+        return array
+
+
+>>>>>>> cd75f90d7d9f7aeb05598de5e32effaea5047f64
+>>>>>>> develop
 class pawn(piece):
 
     def __init__(self, pos, team):
@@ -220,12 +238,16 @@ class queen(piece):
 
     def __init__(self, pos, team):
         super().__init__(pos, team)
+<<<<<<< HEAD
         self.arraym = []
+=======
+>>>>>>> develop
 
     def __str__(self):  # function para que no imprima en lenguaje maquina
         return "Q"
 
     def posible_move(self):
+<<<<<<< HEAD
       
         #print (piece.move_posible(queen))
 
@@ -255,3 +277,11 @@ piece = piece("white", [8, 4])
 reina = queen("white", [8, 4])
 print(reina.posible_move())
 
+=======
+        piece.move_posible()
+
+
+class king(piece):  # PROGRESS
+    def __str__(self):  # function para que no imprima en lenguaje maquina
+        return "K"
+>>>>>>> develop

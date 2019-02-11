@@ -101,7 +101,7 @@ board_Game = [[" \t", "A", "B", "C", "D", "E", "F", "G", "H\n"],
 #
 #     # if the pawn is in the second possible_move
 #     try:
-#         if board[x + 2][y] == "" and x == 1 and board[x + 1][y] == "":
+#         if board[x + 2][y] == " " and x == 1 and board[x + 1][y] == "":
 #             possible_move.append([[x + 2], [y]])
 #
 #         pass
@@ -128,3 +128,8 @@ positionY = {"A": 1, "B": 2, "C": 3, "D": 4, "E": 5, "F": 6, "G": 7, "H": 8}
 print(board_Game[7][positionY["A"]])
 
 print(positionY.len())
+
+
+print(black["pawn"][1].pos)
+
+black["pawn"][1].pos = [1, 4]
