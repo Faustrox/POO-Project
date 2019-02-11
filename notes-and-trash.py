@@ -142,8 +142,12 @@ import pieces
 # print(pos1)
 
 
+pawn1 = pieces.pawn("black",[2, 1])
 
-pieces.board.fill()
+
+pieces.board.game_board[2][1] = pawn1
 pieces.board.show()
 
-print(pieces.board.game_board[2][1].possible_move(pieces.board))
+pawn1.move(pieces.board, pawn1.possible_move(pieces.board), "A4")
+
+pieces.board.show()

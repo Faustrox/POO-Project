@@ -96,21 +96,18 @@ class piece():
 
     def move(self, board, array, pos2):
 
-        pos1 = [board.positionY[self.pos[0]], int(self.pos[1])]
-        pos2 = [board.positionY[pos2[0]], int(pos2[1])]
+        pos1 = [int(self.pos[1]), board.positionY[self.pos[0]]]
+        pos2_name = pos2
+        pos2 = [int(pos2[1]), board.positionY[pos2[0]]]
         piece = board.game_board[pos1[0]][pos1[1]]
 
-        if pos2 in array:
-
-            if board[pos2] != " " or board[pos2] != "■":
-                # It's a piece, can eat
-                __eat(pos2)
+        if pos2_name in array:
 
             board.game_board[pos1[0]][pos1[1]] = board.empty_board[pos1[0]][pos1[1]]
             self.pos = pos2
             board.game_board[self.pos[0]][self.pos[1]] = piece
 
-        elif pos2 not in array:
+        elif pos2_name not in array:
 
             print("Hey, that position is imposible to do with this piece")
 
@@ -133,16 +130,18 @@ class piece():
 
 
 class pawn(piece):
-
+    # Hereda los atributos de equipo y posiciones
     def __init__(self, pos, team):
         super().__init__(pos, team)
         self.first_turn = True
 
+    # Movimientos posibles
     def possible_move(self, board):
         array = []
         pos = [int(self.pos[1]), board.positionY[self.pos[0]]]
         move_RD, move_LD = False, False
 
+        # Verifica si el jugador usa fichas negras o blancas
         if self.team == "black":
             move_forward = pos
             move_forward[0] += 1
@@ -151,6 +150,7 @@ class pawn(piece):
             move_forward = pos
             move_forward[0] -= 1
 
+        # desplazamiento de las posiciones de las fichas
         if pos[0] >= 1 and pos[0] >= 8:
             move_RD = [move_forward[0], move_forward[1] + 1]
 
@@ -161,11 +161,14 @@ class pawn(piece):
 
             array.append(self.positionY[move_forward[1]] + str(move_forward[0]))
 
+            # Verifica el primer movimiento de cada peon
             if self.first_turn is True:
                 self.first_turn = False
                 array.append(self.positionY[move_forward[1]] + str(move_forward[0] + 1))
 
+        # Verifica el movimiento diagonal para poder comer o eliminar una ficha enemiga
         if move_RD is not False:
+            # derecha
 
             if isinstance(board.game_board[move_RD[0]][move_RD[1]], piece) is True:
 
@@ -174,6 +177,7 @@ class pawn(piece):
                     array.append(self.positionY[move_RD[1]] + str(move_RD[0]))
 
         if move_LD is not False:
+            # Izquierda
 
             if isinstance(board.game_board[move_LD[0]][move_LD[1]], piece) is True:
 
