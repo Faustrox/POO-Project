@@ -141,13 +141,9 @@ import pieces
 # pos1 = [positionY[pos1[0]], int(pos1[1])]
 # print(pos1)
 
-
-pawn1 = pieces.pawn("black",[2, 1])
-
-
-pieces.board.game_board[2][1] = pawn1
+bishoop1 = pieces.bishoop("white", [8, 8])
+pieces.board.game_board[8][8] = bishoop1
 pieces.board.show()
 
-pawn1.move(pieces.board, pawn1.possible_move(pieces.board), "A4")
 
-pieces.board.show()
+print(pieces.board.game_board[8][8].possible_move(pieces.board))

@@ -200,6 +200,65 @@ class knight(piece):
 
 
 class bishoop(piece):
+
+    def possible_move(self, board):
+
+        array = []
+        pos = [int(self.pos[1]), board.positionY[self.pos[0]]]
+        move_LD, move_RD = pos, pos
+        can_beR, can_beL = True, True
+
+        while True:  # Diagonal to up
+
+            move_RD = [move_RD[0] - 1, move_RD[1] + 1]
+            move_LD = [move_LD[0] - 1, move_LD[1] - 1]
+
+            if move_RD[0] > 0 and move_RD[1] < 9 and isinstance(board.game_board[move_RD[0]][move_RD[1]], piece) is False and can_beR is True:
+
+                array.append(self.positionY[move_RD[1]] + str(move_RD[0]))
+
+            else:
+                can_beR = False
+
+            if move_LD[0] > 0 and move_RD[1] > 0 and isinstance(board.game_board[move_LD[0]][move_LD[1]], piece) is False and can_beL is True:
+
+                array.append(self.positionY[move_LD[1]] + str(move_LD[0]))
+
+            else:
+                can_beL = False
+
+            if can_beR is False and can_beL is False:
+
+                break
+
+        move_LD, move_RD = pos, pos
+        can_beR, can_beL = True, True
+
+        while True:  # Diagonal to down
+
+            move_RD = [move_RD[0] + 1, move_RD[1] + 1]
+            move_LD = [move_LD[0] + 1, move_LD[1] - 1]
+
+            if move_RD[0] < 9 and move_RD[1] < 9 and isinstance(board.game_board[move_RD[0]][move_RD[1]], piece) is False and can_beR is True:
+
+                array.append(self.positionY[move_RD[1]] + str(move_RD[0]))
+
+            else:
+                can_beR = False
+
+            if move_LD[0] < 9 and move_RD[1] > 0 and isinstance(board.game_board[move_LD[0]][move_LD[1]], piece) is False and can_beL is True:
+
+                array.append(self.positionY[move_LD[1]] + str(move_LD[0]))
+
+            else:
+                can_beL = False
+
+            if can_beR is False and can_beL is False:
+
+                break
+
+        return array
+
     def __str__(self):  # function para que no imprima en lenguaje maquina
         return "B"
 
