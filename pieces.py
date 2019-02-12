@@ -213,16 +213,36 @@ class bishoop(piece):
             move_RD = [move_RD[0] - 1, move_RD[1] + 1]
             move_LD = [move_LD[0] - 1, move_LD[1] - 1]
 
-            if move_RD[0] > 0 and move_RD[1] < 9 and isinstance(board.game_board[move_RD[0]][move_RD[1]], piece) is False and can_beR is True:
+            if move_RD[0] > 0 and move_RD[1] < 9 and can_beR is True:
 
-                array.append(self.positionY[move_RD[1]] + str(move_RD[0]))
+                if isinstance(board.game_board[move_RD[0]][move_RD[1]], piece) is False:
+
+                    array.append(self.positionY[move_RD[1]] + str(move_RD[0]))
+
+                elif board.game_board[move_RD[0]][move_RD[1]].team != self.team:
+
+                    array.append(self.positionY[move_RD[1]] + str(move_RD[0]))
+                    can_beR = False
+
+                else:
+                    can_beR = False
 
             else:
                 can_beR = False
 
-            if move_LD[0] > 0 and move_RD[1] > 0 and isinstance(board.game_board[move_LD[0]][move_LD[1]], piece) is False and can_beL is True:
+            if move_LD[0] > 0 and move_RD[1] > 0 and can_beL is True:
 
-                array.append(self.positionY[move_LD[1]] + str(move_LD[0]))
+                if isinstance(board.game_board[move_LD[0]][move_LD[1]], piece) is False:
+
+                    array.append(self.positionY[move_LD[1]] + str(move_LD[0]))
+
+                elif board.game_board[move_RD[0]][move_RD[1]].team != self.team:
+
+                    array.append(self.positionY[move_LD[1]] + str(move_LD[0]))
+                    can_beL = False
+
+                else:
+                    can_beL = False
 
             else:
                 can_beL = False
@@ -239,16 +259,36 @@ class bishoop(piece):
             move_RD = [move_RD[0] + 1, move_RD[1] + 1]
             move_LD = [move_LD[0] + 1, move_LD[1] - 1]
 
-            if move_RD[0] < 9 and move_RD[1] < 9 and isinstance(board.game_board[move_RD[0]][move_RD[1]], piece) is False and can_beR is True:
+            if move_RD[0] < 9 and move_RD[1] < 9 and can_beR is True:
 
-                array.append(self.positionY[move_RD[1]] + str(move_RD[0]))
+                if isinstance(board.game_board[move_RD[0]][move_RD[1]], piece) is False:
+
+                    array.append(self.positionY[move_RD[1]] + str(move_RD[0]))
+
+                elif board.game_board[move_RD[0]][move_RD[1]].team != self.team:
+
+                    array.append(self.positionY[move_RD[1]] + str(move_RD[0]))
+                    can_beR = False
+
+                else:
+                    can_beR = False
 
             else:
                 can_beR = False
 
-            if move_LD[0] < 9 and move_RD[1] > 0 and isinstance(board.game_board[move_LD[0]][move_LD[1]], piece) is False and can_beL is True:
+            if move_LD[0] < 9 and move_LD[1] > 0 and can_beL is True:
 
-                array.append(self.positionY[move_LD[1]] + str(move_LD[0]))
+                if isinstance(board.game_board[move_LD[0]][move_LD[1]], piece) is False:
+
+                    array.append(self.positionY[move_LD[1]] + str(move_LD[0]))
+
+                elif board.game_board[move_RD[0]][move_RD[1]].team != self.team:
+
+                    array.append(self.positionY[move_LD[1]] + str(move_LD[0]))
+                    can_beL = False
+
+                else:
+                    can_beL = False
 
             else:
                 can_beL = False
