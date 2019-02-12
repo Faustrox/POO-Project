@@ -292,26 +292,60 @@ class bishoop(piece):
 class rook(piece):
     # A rook (in spanish called tower), it can move straight but in diference of
     # a pawn is that the rook can move more than one step
-
-    def __str__(self):  # function para que no imprima en lenguaje maquina
-        return "R"
-
-
-class queen(piece):
-
     def __init__(self, pos, team):
         super().__init__(pos, team)
         self.arraym = [] #variable que guarda las posiciones
-
-    
+        
     def __str__(self):  # function para que no imprima en lenguaje maquina
-        return "Q"
+        return "R"
 
-    def posible_move(self):
+    def possible_move(self):
         pos = [int(self.pos[1]), board.positionY[self.pos[0]]]
         pieces_name = [pawn, knight, bishoop, rook, queen, king]
 
-        #movimiento horizontal
+        #Movimiento Vertical
+        #Movimiento Vertical Hacia arriba
+        for i in range(pos[0] - 1, 0, -1):
+            pos_arriba = board.game_board[i][pos[1]]
+            j = 0
+            objecto = False
+            while j < len(pieces_name) :
+                if isinstance(pos_arriba, pieces_name[j]) is True:
+                    objecto = True
+                    if self.team == "white":              #si el objeto es de diferente team se agrega su pos
+                        if pos_arriba == 'black':          #de lo contrario no se agrega y se retornan la posiciones
+                            self.arraym.append([i, pos[1]])
+                    if self.team == "black":
+                        if pos_arriba == 'white':
+                            self.arraym.append([i, pos[1]])
+                j += 1
+            if objecto == True:
+                break
+            else:
+                self.arraym.append([i, pos[1]])
+            
+        #Movimiento Vertical hacia abajo
+        for i in range(pos[0] + 1, len(board.game_board)):
+            pos_abajo = board.game_board[i][pos[1]]
+            j = 0
+            objecto = False
+            while j < len(pieces_name) :
+                if isinstance(pos_abajo, pieces_name[j]) is True:
+                    objecto = True
+                    if self.team == "white":              #si el objeto es de diferente team se agrega su pos
+                        if pos_abajo == 'black':          #de lo contrario no se agrega y se retornan la posiciones
+                            self.arraym.append([i, pos[1]])
+                    if self.team == "black":
+                        if pos_abajo == 'white':
+                            self.arraym.append([i, pos[1]])
+                j += 1
+            if objecto == True:
+                break
+            else:
+                self.arraym.append([i, pos[1]])
+           
+
+        #Movimiento Horizontal
         #movimientos horizontal a la derecha
         for i in range(pos[1] + 1, len(board.game_board[int(pos[1])])): #for que recorre la posiciones a la derecha
             pieces_right = board.game_board[pos[0]][i]  #la variable son las posiciones en el board este caso a la izq.
@@ -354,11 +388,22 @@ class queen(piece):
         return self.arraym
 
 
+class queen(piece):
+
+    def __init__(self, pos, team):
+        super().__init__(pos, team)
+    
+    def __str__(self):  # function para que no imprima en lenguaje maquina
+        return "Q"
+
+    
+
 class king(piece):  # PROGRESS
     def __str__(self):  # function para que no imprima en lenguaje maquina
         return "K"
 
 board.fill()
+board.show()
 #piece = piece("white", [8, 5])
-reina = queen("white", [3, 3])
-print (reina.posible_move())
+torre = rook("white", [4, 5])
+print (torre.possible_move())
