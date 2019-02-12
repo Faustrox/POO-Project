@@ -110,45 +110,10 @@ class piece():
         elif pos2_name not in array:
 
             print("Hey, that position is imposible to do with this piece")
-
-    def move_posible(self, pieza):
-        pieces_name = [pawn, knight, bishoop, rook, queen, king]
-        pieces_name.remove(pieza)
-        array = []
-
-        # return movimientos imposibles ya que no puedes-
-        # ocupar el espacio de una ficha de tu mismo team
-
-        for i in board.board:
-            for j in i:
-                k = 0
-<<<<<<< HEAD
-                while k <= len(pieces_name) - 1:
-=======
-                while k <= 5:
->>>>>>> develop
-                    if (isinstance(j, pieces_name[k])) is True:
-                        if j.team == "white":
-                            print("hola")
-                            array.append(self.positionY[j.pos[1]] + self.positionX[j.pos[0]])
-                    k += 1
-<<<<<<< HEAD
-        return array
+     
 
 
 
-=======
-<<<<<<< HEAD
-            
-        return array      
-    
-                    
-=======
-        return array
-
-
->>>>>>> cd75f90d7d9f7aeb05598de5e32effaea5047f64
->>>>>>> develop
 class pawn(piece):
     # Hereda los atributos de equipo y posiciones
     def __init__(self, pos, team):
@@ -157,6 +122,7 @@ class pawn(piece):
 
     # Movimientos posibles
     def possible_move(self, board):
+        
         array = []
         pos = [int(self.pos[1]), board.positionY[self.pos[0]]]
         move_RD, move_LD = False, False
@@ -236,34 +202,57 @@ class queen(piece):
 
     def __init__(self, pos, team):
         super().__init__(pos, team)
-<<<<<<< HEAD
-        self.arraym = []
-=======
->>>>>>> develop
+        self.arraym = [] #variable que guarda las posiciones
 
+    
     def __str__(self):  # function para que no imprima en lenguaje maquina
         return "Q"
 
     def posible_move(self):
-<<<<<<< HEAD
-      
-        #print (piece.move_posible(queen))
+        pos = [int(self.pos[1]), board.positionY[self.pos[0]]]
+        pieces_name = [pawn, knight, bishoop, rook, queen, king]
 
-        #diagonal  
-        #pa lo lao
-        pos_A = self.pos[0]
-        
-        for i in range(self.pos[1] + 1, len(board.board[pos_A])):
-            print (board.board[pos_A][i])
-            print (isinstance(board.board[pos_A][i], piece)) 
-            if isinstance(board.board[pos_A][i], piece) is False:
-                print ("is object")
-            
-        #for i in range(self.pos[1] - 1, 0, -1): 
-            #print (board.board[pos_A][i])
-            
-        #print (self.arraym, self.team)
-        #pa arriba y pa abajo
+        #movimiento horizontal
+        #movimientos horizontal a la derecha
+        for i in range(pos[1] + 1, len(board.game_board[int(pos[1])])): #for que recorre la posiciones a la derecha
+            pieces_right = board.game_board[pos[0]][i]  #la variable son las posiciones en el board este caso a la izq.
+            j = 0
+            objecto = False
+            while j < len(pieces_name) :
+                if isinstance(pieces_right, pieces_name[j]) is True:
+                    objecto = True
+                    if self.team == "white":              #si el objeto es de diferente team se agrega su pos
+                        if pieces_right == 'black':          #de lo contrario no se agrega y se retornan la posiciones
+                            self.arraym.append([i, pos[0]])
+                    if self.team == "black":
+                        if pieces_right == 'white':
+                            self.arraym.append([i, pos[0]])
+                j += 1
+            if objecto == True:
+                break
+            else:
+                self.arraym.append([i, pos[0]])
+
+        #movimientos horizontal a la izquierda
+        for i in range(pos[1] - 1, 0, -1): #for que recorre la posiciones a la izquierda, el for se para cuando encuentra un objeto
+            pieces_left = board.game_board[pos[0]][i]  #la variable son las posiciones en el board este caso a la izq.
+            j = 0
+            objecto = False
+            while j < len(pieces_name) :
+                if isinstance(pieces_left, pieces_name[j]) is True:
+                    objecto = True
+                    if self.team == "white":              #si el objeto es de diferente team se agrega su pos
+                        if pieces_left == 'black':          #de lo contrario no se agrega y se retornan la posiciones
+                            self.arraym.append([i, pos[0]])
+                    if self.team == "black":
+                        if pieces_left == 'white':
+                            self.arraym.append([i, pos[0]])
+                j += 1
+            if objecto == True:
+                break
+            else:
+                self.arraym.append([i, pos[0]])
+        return self.arraym
 
 
 class king(piece):  # PROGRESS
@@ -271,15 +260,6 @@ class king(piece):  # PROGRESS
         return "K"
 
 board.fill()
-piece = piece("white", [8, 4])
-reina = queen("white", [8, 4])
-print(reina.posible_move())
-
-=======
-        piece.move_posible()
-
-
-class king(piece):  # PROGRESS
-    def __str__(self):  # function para que no imprima en lenguaje maquina
-        return "K"
->>>>>>> develop
+#piece = piece("white", [8, 5])
+reina = queen("white", [3, 3])
+print (reina.posible_move())
