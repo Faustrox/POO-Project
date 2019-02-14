@@ -199,11 +199,9 @@ class knight(piece):
 
 class bishoop(piece):
 
-    def __init__(self, pos, team):
-        super().__init__(pos, team)
-        self.array = []
-
     def possible_move(self, board):
+
+        array = []
 
         pos = [int(self.pos[1]), board.positionY[self.pos[0]]]
         move_LD, move_RD = pos, pos
@@ -218,11 +216,11 @@ class bishoop(piece):
 
                 if isinstance(board.game_board[move_RD[0]][move_RD[1]], piece) is False:
 
-                    self.array.append(self.positionY[move_RD[1]] + str(move_RD[0]))
+                    array.append(self.positionY[move_RD[1]] + str(move_RD[0]))
 
                 elif board.game_board[move_RD[0]][move_RD[1]].team != self.team:
 
-                    self.array.append(self.positionY[move_RD[1]] + str(move_RD[0]))
+                    array.append(self.positionY[move_RD[1]] + str(move_RD[0]))
                     can_beR = False
 
                 else:
@@ -235,11 +233,11 @@ class bishoop(piece):
 
                 if isinstance(board.game_board[move_LD[0]][move_LD[1]], piece) is False:
 
-                    self.array.append(self.positionY[move_LD[1]] + str(move_LD[0]))
+                    array.append(self.positionY[move_LD[1]] + str(move_LD[0]))
 
                 elif board.game_board[move_RD[0]][move_RD[1]].team != self.team:
 
-                    self.array.append(self.positionY[move_LD[1]] + str(move_LD[0]))
+                    array.append(self.positionY[move_LD[1]] + str(move_LD[0]))
                     can_beL = False
 
                 else:
@@ -264,11 +262,11 @@ class bishoop(piece):
 
                 if isinstance(board.game_board[move_RD[0]][move_RD[1]], piece) is False:
 
-                    self.array.append(self.positionY[move_RD[1]] + str(move_RD[0]))
+                    array.append(self.positionY[move_RD[1]] + str(move_RD[0]))
 
                 elif board.game_board[move_RD[0]][move_RD[1]].team != self.team:
 
-                    self.array.append(self.positionY[move_RD[1]] + str(move_RD[0]))
+                    array.append(self.positionY[move_RD[1]] + str(move_RD[0]))
                     can_beR = False
 
                 else:
@@ -281,11 +279,11 @@ class bishoop(piece):
 
                 if isinstance(board.game_board[move_LD[0]][move_LD[1]], piece) is False:
 
-                    self.array.append(self.positionY[move_LD[1]] + str(move_LD[0]))
+                    array.append(self.positionY[move_LD[1]] + str(move_LD[0]))
 
                 elif board.game_board[move_RD[0]][move_RD[1]].team != self.team:
 
-                    self.array.append(self.positionY[move_LD[1]] + str(move_LD[0]))
+                    array.append(self.positionY[move_LD[1]] + str(move_LD[0]))
                     can_beL = False
 
                 else:
@@ -298,7 +296,7 @@ class bishoop(piece):
 
                 break
 
-        return self.array
+        return array
 
     def __str__(self):  # function para que no imprima en lenguaje maquina
         if self.pos[0] == "A":
