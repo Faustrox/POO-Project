@@ -143,10 +143,8 @@ import pieces
 
 bishoop1 = pieces.bishoop("white", [4, 4])
 bishoop2 = pieces.bishoop("white", [6, 6])
-
-pieces.board.game_board[4][4] = bishoop1
-pieces.board.game_board[6][6] = bishoop2
+king = pieces.king("white", [2, 3])
+pieces.board.game_board[2][3] = king
 pieces.board.show()
 
-
-print(pieces.board.game_board[4][4].possible_move(pieces.board))
+print(pieces.board.game_board[2][3].possible_move(pieces.board))
