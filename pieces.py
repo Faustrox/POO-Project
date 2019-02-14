@@ -391,18 +391,19 @@ class rook(piece):
         return self.arraym
 
 
-class queen(bishoop):
+class queen(piece):
 
     def __init__(self, pos, team):
         super().__init__(pos, team)
-
+        self.arraym = []
     
     def __str__(self):  # function para que no imprima en lenguaje maquina
         return "Q"
 
-    def possible_move(self):
-        super().possible_move(board.game_board)
-        print (self.array)
+    def possible_move(self, pieza, pieza2):
+        print (pieza.possible_move(), "  ", pieza2.possible_move(board))
+   
+        
         
 
 class king(piece):  # PROGRESS
@@ -411,7 +412,7 @@ class king(piece):  # PROGRESS
 
 board.fill()
 #piece = piece("white", [8, 5])
-#torre = rook("white", [8, 8])
-reina = queen("white", [5, 4])
-#alfil = bishoop("white", [4,1])
-print (reina.possible_move())
+torre = rook("white", [4, 4])
+reina = queen("white", [ 8, 5])
+alfil = bishoop("white", [2, 1])
+print (reina.possible_move(torre, alfil))
