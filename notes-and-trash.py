@@ -140,8 +140,3 @@ import pieces
 # pos1 = "A1"
 # pos1 = [positionY[pos1[0]], int(pos1[1])]
 # print(pos1)
-
-bishoop1 = pieces.bishoop("white", [4, 4], "")
-pieces.board.show()
-
-print(bishoop1.possible_move(pieces.board))
