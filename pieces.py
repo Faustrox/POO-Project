@@ -12,15 +12,15 @@ class board():
                            ["7\t", "▓", "░", "▓", "░", "▓", "░", "▓", "░"],
                            ["8\t", "░", "▓", "░", "▓", "░", "▓", "░", "▓"]]
         # Dise
-        self.empty_board = [[" \t", "A", "B", "C", "D", "E", "F", "G", "H\n"],
-                            ["1\t", "■", " ", "■", " ", "■", " ", "■", " "],
-                            ["2\t", " ", "■", " ", "■", " ", "■", " ", "■"],
-                            ["3\t", "■", " ", "■", " ", "■", " ", "■", " "],
-                            ["4\t", " ", "■", " ", "■", " ", "■", " ", "■"],
-                            ["5\t", "■", " ", "■", " ", "■", " ", "■", " "],
-                            ["6\t", " ", "■", " ", "■", " ", "■", " ", "■"],
-                            ["7\t", "■", " ", "■", " ", "■", " ", "■", " "],
-                            ["8\t", " ", "■", " ", "■", " ", "■", " ", "■"]]
+        self.empty_board = [[" \t", "A ", " B ", " C ", " D ", " E ", " F ", " G ", " H\n"],
+                            ["1\t", "▓", "░", "▓", "░", "▓", "░", "▓", "░"],
+                            ["2\t", "░", "▓", "░", "▓", "░", "▓", "░", "▓"],
+                            ["3\t", "▓", "░", "▓", "░", "▓", "░", "▓", "░"],
+                            ["4\t", "░", "▓", "░", "▓", "░", "▓", "░", "▓"],
+                            ["5\t", "▓", "░", "▓", "░", "▓", "░", "▓", "░"],
+                            ["6\t", "░", "▓", "░", "▓", "░", "▓", "░", "▓"],
+                            ["7\t", "▓", "░", "▓", "░", "▓", "░", "▓", "░"],
+                            ["8\t", "░", "▓", "░", "▓", "░", "▓", "░", "▓"]]
         # Se le da valor a las posiciones para leer las columnas
         self.positionY = {"A": 1, "B": 2, "C": 3, "D": 4, "E": 5, "F": 6, "G": 7, "H": 8}
 
@@ -75,7 +75,7 @@ class board():
 
                 if (fila == 7):
                     self.game_board[fila][columna] = pawn(
-                        "white", [fila, columna, "pawn"])  # peones
+                        "white", [fila, columna], "pawn")  # peones
 
 
 board = board()
@@ -95,8 +95,9 @@ class piece():
 
     # def eat(self, pos2):
 
-    def move(self, board, self.possible_move(board), pos2):
+    def move(self, board, pos2):
 
+        array = self.possible_move(board)
         pos1 = [int(self.pos[1]), board.positionY[self.pos[0]]]
         pos2_name = pos2
         pos2 = [int(pos2[1]), board.positionY[pos2[0]]]
@@ -199,10 +200,8 @@ class knight(piece):
         else:
             return " H "
 
-<<<<<<< HEAD
-=======
-    def __init__(self, pos, team):
-        super().__init__(pos, team)
+    def __init__(self, pos, team, name):
+        super().__init__(pos, team, name)
 
     # Progress
 
@@ -234,7 +233,6 @@ class knight(piece):
     #     else:
     #         return False
 
->>>>>>> start_gameloop
 
 class bishoop(piece):
 
