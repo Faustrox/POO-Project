@@ -37,45 +37,45 @@ class board():
                 if (fila == 1):
                     if (columna == 1 or columna == 8):
                         self.game_board[fila][columna] = rook(
-                            "black", [fila, columna])  # torres
+                            "black", [fila, columna], "rook")  # torres
                     if (columna == 2 or columna == 7):
                         self.game_board[fila][columna] = knight(
-                            "black", [fila, columna])  # caballo de trolla
+                            "black", [fila, columna], "knight")  # caballo de trolla
                     if (columna == 3 or columna == 6):
                         self.game_board[fila][columna] = bishoop(
-                            "black", [fila, columna])  # alfil
+                            "black", [fila, columna], "bishoop")  # alfil
                     if (columna == 4):
                         self.game_board[fila][columna] = queen(
-                            "black", [fila, columna])  # reina
+                            "black", [fila, columna], "queen")  # reina
                     if (columna == 5):
                         self.game_board[fila][columna] = king(
-                            "black", [fila, columna])  # rey
+                            "black", [fila, columna], "king")  # rey
                 if (fila == 2):
                     self.game_board[fila][columna] = pawn(
-                        "black", [fila, columna])  # peones
+                        "black", [fila, columna], "pawn")  # peones
 
         for fila in range(7, 9):
             for columna in range(1, 9):
                 if (fila == 8):
                     if (columna == 1 or columna == 8):
                         self.game_board[fila][columna] = rook(
-                            "white", [fila, columna])  # torres
+                            "white", [fila, columna], "rook")  # torres
                     if (columna == 2 or columna == 7):
                         self.game_board[fila][columna] = knight(
-                            "white", [fila, columna])  # caballo
+                            "white", [fila, columna], "knight")  # caballo
                     if (columna == 3 or columna == 6):
                         self.game_board[fila][columna] = bishoop(
-                            "white", [fila, columna])  # alfil
+                            "white", [fila, columna], "bishoop")  # alfil
                     if (columna == 5):
                         self.game_board[fila][columna] = queen(
-                            "white", [fila, columna])  # reina
+                            "white", [fila, columna], "queen")  # reina
                     if (columna == 4):
                         self.game_board[fila][columna] = king(
-                            "white", [fila, columna])  # rey
+                            "white", [fila, columna], "king")  # rey
 
                 if (fila == 7):
                     self.game_board[fila][columna] = pawn(
-                        "white", [fila, columna])  # peones
+                        "white", [fila, columna, "pawn"])  # peones
 
 
 board = board()
@@ -86,15 +86,16 @@ board = board()
 
 class piece():
 
-    def __init__(self, team, pos):
+    def __init__(self, team, pos, name):
         self.positionX = {1: "1", 2: "2", 3: "3", 4: "4", 5: "5", 6: "6", 7: "7", 8: "8"}
         self.positionY = {1: "A", 2: "B", 3: "C", 4: "D", 5: "E", 6: "F", 7: "G", 8: "H"}
+        self.name = name
         self.pos = self.positionY[pos[1]] + str(pos[0])
         self.team = team
 
     # def eat(self, pos2):
 
-    def move(self, board, array, pos2):
+    def move(self, board, self.possible_move(board), pos2):
 
         pos1 = [int(self.pos[1]), board.positionY[self.pos[0]]]
         pos2_name = pos2
@@ -109,13 +110,15 @@ class piece():
 
         elif pos2_name not in array:
 
-            print("Hey, that position is imposible to do with this piece")
+            return "Hey, that position is imposible to do with this piece"
+
+        return True
 
 
 class pawn(piece):
     # Hereda los atributos de equipo y posiciones
-    def __init__(self, pos, team):
-        super().__init__(pos, team)
+    def __init__(self, pos, team, name):
+        super().__init__(pos, team, name)
         self.first_turn = True
 
     # Movimientos posibles
@@ -196,6 +199,42 @@ class knight(piece):
         else:
             return " H "
 
+<<<<<<< HEAD
+=======
+    def __init__(self, pos, team):
+        super().__init__(pos, team)
+
+    # Progress
+
+    # def possible_move(self, board, pos):
+    #     pos[int(self.pos[1]), board.positionY[self.pos[0]]]
+    #     moveL = False
+    #
+    #     if self.team == "black":
+    #         moveL = pos
+    #         moveL[0] += 1
+    #
+    #     elif self.team == "white":
+    #         moveL = pos
+    #         moveL[0] -= 1
+    #
+    # def movementL(self, x, y, board):
+    #     new_mov = []
+    #     movL = [(-1, -2), (-1, 2), (-2, -1), (-2, 1), (1, -2), (1, 2), (2, -1), (2, 1)]
+    #     for i in movL:
+    #         newX = x + i[0]
+    #         newY = y + i[1]
+    #         if possible(newX, board) and possible(newY, board):
+    #             new_mov.append(newX, newY)
+    #         return new_mov
+    #
+    # def possible(self, x, newY):
+    #     if x >= 0 and x < board:
+    #         return True
+    #     else:
+    #         return False
+
+>>>>>>> start_gameloop
 
 class bishoop(piece):
 
@@ -312,8 +351,8 @@ class bishoop(piece):
 class rook(piece):
     # A rook (in spanish called tower), it can move straight but in diference of
     # a pawn is that the rook can move more than one step
-    def __init__(self, pos, team):
-        super().__init__(pos, team)
+    def __init__(self, pos, team, name):
+        super().__init__(pos, team, name)
         self.arraym = []  # variable que guarda las posiciones
 
     def __str__(self):  # function para que no imprima en lenguaje maquina
@@ -420,6 +459,7 @@ class rook(piece):
 
 class queen(piece):
 
+<<<<<<< HEAD
     def __init__(self, pos, team):
         super().__init__(pos, team)
 <<<<<<< HEAD
@@ -428,6 +468,8 @@ class queen(piece):
         self.arraym = []
     
 >>>>>>> Reina
+=======
+>>>>>>> b79bae11cd8fa177294a5383882ee5656b7e6c02
     def __str__(self):  # function para que no imprima en lenguaje maquina
         if self.pos[0] == "A":
             return "B "
