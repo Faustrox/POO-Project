@@ -380,15 +380,15 @@ class rook(piece):
                     objecto = True
                     if self.team == "white":  # si el objeto es de diferente team se agrega su pos
                         if pos_arriba == 'black':  # de lo contrario no se agrega y se retornan la posiciones
-                            self.arraym.append([i, pos[1]])
+                            self.arraym.append(str(self.positionY[pos[1]]) + str(i))
                     if self.team == "black":
                         if pos_arriba == 'white':
-                            self.arraym.append([i, pos[1]])
+                            self.arraym.append(str(self.positionY[pos[1]]) + str(i))
                 j += 1
             if objecto is True:
                 break
             else:
-                self.arraym.append([i, pos[1]])
+                self.arraym.append(str(self.positionY[pos[1]]) + str(i))
 
         # Movimiento Vertical hacia abajo
         for i in range(pos[0] + 1, len(board.game_board)):
@@ -400,15 +400,15 @@ class rook(piece):
                     objecto = True
                     if self.team == "white":  # si el objeto es de diferente team se agrega su pos
                         if pos_abajo == 'black':  # de lo contrario no se agrega y se retornan la posiciones
-                            self.arraym.append([i, pos[1]])
+                            self.arraym.append(str(self.positionY[pos[1]]) + str(i))
                     if self.team == "black":
                         if pos_abajo == 'white':
-                            self.arraym.append([i, pos[1]])
+                            self.arraym.append(str(self.positionY[pos[1]]) + str(i))
                 j += 1
             if objecto is True:
                 break
             else:
-                self.arraym.append([i, pos[1]])
+                self.arraym.append(str(self.positionY[pos[1]]) + str(i))
 
         # Movimiento Horizontal
         # movimientos horizontal a la derecha
@@ -423,15 +423,15 @@ class rook(piece):
                     objecto = True
                     if self.team == "white":  # si el objeto es de diferente team se agrega su pos
                         if pieces_right == 'black':  # de lo contrario no se agrega y se retornan la posiciones
-                            self.arraym.append([i, pos[0]])
+                            self.arraym.append(str(self.positionY[i]) + str(pos[0]))
                     if self.team == "black":
                         if pieces_right == 'white':
-                            self.arraym.append([i, pos[0]])
+                            self.arraym.append(str(self.positionY[i]) + str(pos[0]))
                 j += 1
             if objecto is True:
                 break
             else:
-                self.arraym.append([i, pos[0]])
+                self.arraym.append(str(self.positionY[i]) + str(pos[0]))
 
         # movimientos horizontal a la izquierda
         # for que recorre la posiciones a la izquierda, el for se para cuando encuentra un objeto
@@ -445,15 +445,15 @@ class rook(piece):
                     objecto = True
                     if self.team == "white":  # si el objeto es de diferente team se agrega su pos
                         if pieces_left == 'black':  # de lo contrario no se agrega y se retornan la posiciones
-                            self.arraym.append([i, pos[0]])
+                            self.arraym.append(str(self.positionY[i]) + str(pos[0]))
                     if self.team == "black":
                         if pieces_left == 'white':
-                            self.arraym.append([i, pos[0]])
+                            self.arraym.append(str(self.positionY[i]) + str(pos[0]))
                 j += 1
             if objecto is True:
                 break
             else:
-                self.arraym.append([i, pos[0]])
+                self.arraym.append(str(self.positionY[i]) + str(pos[0]))
         return self.arraym
 
 
@@ -463,6 +463,7 @@ class queen(piece):
     def __init__(self, pos, team):
         super().__init__(pos, team)
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
         self.arraym = []
@@ -470,6 +471,10 @@ class queen(piece):
 >>>>>>> Reina
 =======
 >>>>>>> b79bae11cd8fa177294a5383882ee5656b7e6c02
+=======
+        self.arraym = []
+
+>>>>>>> Reina
     def __str__(self):  # function para que no imprima en lenguaje maquina
         if self.pos[0] == "A":
             return "B "
@@ -481,6 +486,7 @@ class queen(piece):
             return " B "
 
 <<<<<<< HEAD
+<<<<<<< HEAD
     def possible_move(self):
         super().possible_move(board.game_board)
         print(self.array)
@@ -491,6 +497,12 @@ class queen(piece):
    
         
         
+>>>>>>> Reina
+=======
+
+    def possible_move(self, pieza, pieza2):
+        self.arraym = pieza.possible_move() + pieza2.possible_move(board)
+        return self.arraym
 >>>>>>> Reina
 
 class king(piece):  # PROGRESS
@@ -516,6 +528,7 @@ class king(piece):  # PROGRESS
 
     def __str__(self):  # function para que no imprima en lenguaje maquina
 <<<<<<< HEAD
+<<<<<<< HEAD
         if self.pos[0] == "A":
             return "K "
 
@@ -525,12 +538,18 @@ class king(piece):  # PROGRESS
         else:
             return " K "
 =======
+=======
+>>>>>>> Reina
         return "K"
 
 board.fill()
+board.show()
 #piece = piece("white", [8, 5])
 torre = rook("white", [4, 4])
-reina = queen("white", [ 8, 5])
-alfil = bishoop("white", [2, 1])
+alfil = bishoop("white", [4, 4])
+reina = queen("white", [ 3, 1])
 print (reina.possible_move(torre, alfil))
+<<<<<<< HEAD
+>>>>>>> Reina
+=======
 >>>>>>> Reina
