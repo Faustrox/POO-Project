@@ -2,15 +2,18 @@ class board():
 
     def __init__(self):
         # Diseno del tablero donde iran las piezas
-        self.game_board = [[" \t", "A ", " B ", " C ", " D ", " E ", " F ", " G ", " H\n"],
-                           ["1\t", "▓", "░", "▓", "░", "▓", "░", "▓", "░"],
-                           ["2\t", "░", "▓", "░", "▓", "░", "▓", "░", "▓"],
-                           ["3\t", "▓", "░", "▓", "░", "▓", "░", "▓", "░"],
-                           ["4\t", "░", "▓", "░", "▓", "░", "▓", "░", "▓"],
-                           ["5\t", "▓", "░", "▓", "░", "▓", "░", "▓", "░"],
-                           ["6\t", "░", "▓", "░", "▓", "░", "▓", "░", "▓"],
-                           ["7\t", "▓", "░", "▓", "░", "▓", "░", "▓", "░"],
-                           ["8\t", "░", "▓", "░", "▓", "░", "▓", "░", "▓"]]
+        self.game_board = [["                 ", "+---------------------------+", "", "", "", "", "", "", "", ""],
+                           ["1\t|", "▓", "░", "▓", "░", "▓", "░", "▓", "░", "|"],
+                           ["2\t|", "░", "▓", "░", "▓", "░", "▓", "░", "▓", "|"],
+                           ["3\t|", "▓", "░", "▓", "░", "▓", "░", "▓", "░", "|"],
+                           ["4\t|", "░", "▓", "░", "▓", "░", "▓", "░", "▓", "|"],
+                           ["5\t|", "▓", "░", "▓", "░", "▓", "░", "▓", "░", "|"],
+                           ["6\t|", "░", "▓", "░", "▓", "░", "▓", "░", "▓", "|"],
+                           ["7\t|", "▓", "░", "▓", "░", "▓", "░", "▓", "░", "|"],
+                           ["8\t|", "░", "▓", "░", "▓", "░", "▓", "░", "▓", "|"],
+                           ["                 ", "+---------------------------+",
+                               "", "", "", "", "", "", "", ""],
+                           [" \t", " A ", " B ", " C ", " D ", " E ", " F ", " G ", " H", ""]]
         # Dise
         self.empty_board = [[" \t", "A ", " B ", " C ", " D ", " E ", " F ", " G ", " H\n"],
                             ["1\t", "▓", "░", "▓", "░", "▓", "░", "▓", "░"],
@@ -20,7 +23,8 @@ class board():
                             ["5\t", "▓", "░", "▓", "░", "▓", "░", "▓", "░"],
                             ["6\t", "░", "▓", "░", "▓", "░", "▓", "░", "▓"],
                             ["7\t", "▓", "░", "▓", "░", "▓", "░", "▓", "░"],
-                            ["8\t", "░", "▓", "░", "▓", "░", "▓", "░", "▓"]]
+                            ["8\t", "░", "▓", "░", "▓", "░", "▓", "░", "▓"],
+                            [" \t", "A ", " B ", " C ", " D ", " E ", " F ", " G ", " H"]]
         # Se le da valor a las posiciones para leer las columnas
         self.positionY = {"A": 1, "B": 2, "C": 3, "D": 4, "E": 5, "F": 6, "G": 7, "H": 8}
 
@@ -28,7 +32,7 @@ class board():
         # Muestra los objetos en el tablero
         for entry in self.game_board:
             print(entry[0], entry[1], entry[2], entry[3],
-                  entry[4], entry[5], entry[6], entry[7], entry[8])
+                  entry[4], entry[5], entry[6], entry[7], entry[8], entry[9])
 
     def fill(self):  # entra las piezas(objetos) al tablero.
 
@@ -95,9 +99,9 @@ class piece():
 
     # def eat(self, pos2):
 
-    def move(self, board, pos2):
+    def move(self, pos2):
 
-        array = self.possible_move(board)
+        array = self.possible_move()
         pos1 = [int(self.pos[1]), board.positionY[self.pos[0]]]
         pos2_name = pos2
         pos2 = [int(pos2[1]), board.positionY[pos2[0]]]
@@ -106,8 +110,8 @@ class piece():
         if pos2_name in array:
 
             board.game_board[pos1[0]][pos1[1]] = board.empty_board[pos1[0]][pos1[1]]
-            self.pos = pos2
-            board.game_board[self.pos[0]][self.pos[1]] = piece
+            self.pos = self.positionY[pos2[1]] + str(pos2[0])
+            board.game_board[pos2[0]][pos2[1]] = piece
 
         elif pos2_name not in array:
 
@@ -123,7 +127,7 @@ class pawn(piece):
         self.first_turn = True
 
     # Movimientos posibles
-    def possible_move(self, board):
+    def possible_move(self):
 
         array = []
         pos = [int(self.pos[1]), board.positionY[self.pos[0]]]
@@ -152,7 +156,10 @@ class pawn(piece):
             # Verifica el primer movimiento de cada peon
             if self.first_turn is True:
                 self.first_turn = False
-                array.append(self.positionY[move_forward[1]] + str(move_forward[0] + 1))
+                if self.team == "black":
+                    array.append(self.positionY[move_forward[1]] + str(move_forward[0] + 1))
+                else:
+                    array.append(self.positionY[move_forward[1]] + str(move_forward[0] - 1))
 
         # Verifica el movimiento diagonal para poder comer o eliminar una ficha enemiga
         if move_RD is not False:
@@ -176,14 +183,14 @@ class pawn(piece):
         return array
 
     def __str__(self):  # function para que no imprima en lenguaje maquina
-        if self.pos[0] == "A":
-            return "P "
 
-        elif self.pos[0] == "H":
-            return " P"
+        if self.team == "white":
+            simbol = "♙"
 
         else:
-            return " P "
+            simbol = "♟"
+
+        return simbol
     #     # A pawn move one step by one but in the exit it can do two step in one move.
 
 
@@ -195,14 +202,14 @@ class knight(piece):
         self.arraym = []
 
     def __str__(self):  # function para que no imprima en lenguaje maquina
-        if self.pos[0] == "A":
-            return "H "
 
-        elif self.pos[0] == "H":
-            return " H"
+        if self.team == "white":
+            simbol = "♘"
 
         else:
-            return " H "
+            simbol = "♞"
+
+        return simbol
 
     def possible_move(self):
         new_pos = []
@@ -226,7 +233,7 @@ class knight(piece):
 
 class bishoop(piece):
 
-    def possible_move(self, board):
+    def possible_move(self):
 
         array = []
 
@@ -262,7 +269,7 @@ class bishoop(piece):
 
                     array.append(self.positionY[move_LD[1]] + str(move_LD[0]))
 
-                elif board.game_board[move_RD[0]][move_RD[1]].team != self.team:
+                elif board.game_board[move_LD[0]][move_LD[1]].team != self.team:
 
                     array.append(self.positionY[move_LD[1]] + str(move_LD[0]))
                     can_beL = False
@@ -308,7 +315,7 @@ class bishoop(piece):
 
                     array.append(self.positionY[move_LD[1]] + str(move_LD[0]))
 
-                elif board.game_board[move_RD[0]][move_RD[1]].team != self.team:
+                elif board.game_board[move_LD[0]][move_LD[1]].team != self.team:
 
                     array.append(self.positionY[move_LD[1]] + str(move_LD[0]))
                     can_beL = False
@@ -326,14 +333,14 @@ class bishoop(piece):
         return array
 
     def __str__(self):  # function para que no imprima en lenguaje maquina
-        if self.pos[0] == "A":
-            return "B "
 
-        elif self.pos[0] == "H":
-            return " B"
+        if self.team == "white":
+            simbol = "♗"
 
         else:
-            return " B "
+            simbol = "♝"
+
+        return simbol
 
 
 class rook(piece):
@@ -344,14 +351,14 @@ class rook(piece):
         self.arraym = []  # variable que guarda las posiciones
 
     def __str__(self):  # function para que no imprima en lenguaje maquina
-        if self.pos[0] == "A":
-            return "R "
 
-        elif self.pos[0] == "H":
-            return " R"
+        if self.team == "white":
+            simbol = "♖"
 
         else:
-            return " R "
+            simbol = "♜"
+
+        return simbol
 
     def possible_move(self):
         pos = [int(self.pos[1]), board.positionY[self.pos[0]]]
@@ -452,26 +459,31 @@ class queen(piece):
         self.arraym = []
 
     def __str__(self):  # function para que no imprima en lenguaje maquina
-        if self.pos[0] == "A":
-            return "B "
 
-        elif self.pos[0] == "H":
-            return " B"
+        if self.team == "white":
+            simbol = "♕"
 
         else:
-            return " B "
+            simbol = "♛"
+
+        return simbol
 
     def possible_move(self):
+<<<<<<< HEAD
         pos = [int(self.pos[1]), board.positionY[self.pos[0]]]
         torre = rook(self.team, [pos[1], pos[0]], "rook")
         alfil = bishoop(self.team, [pos[0], pos[1]], "bishoop")
         self.arraym = torre.possible_move() + alfil.possible_move(board)
         return self.arraym
+=======
+        super().possible_move()
+        print(self.array)
+>>>>>>> game_loop
 
 
 class king(piece):  # PROGRESS
 
-    def possible_move(self, board):
+    def possible_move(self):
 
         array = []
         pos = [int(self.pos[1]), board.positionY[self.pos[0]]]
@@ -491,13 +503,12 @@ class king(piece):  # PROGRESS
         return array
 
     def __str__(self):  # function para que no imprima en lenguaje maquina
-        if self.pos[0] == "A":
-            return "K "
 
-        elif self.pos[0] == "H":
-            return " K"
+        if self.team == "white":
+            simbol = "♔"
 
         else:
+<<<<<<< HEAD
             return " K "
 
 
@@ -511,3 +522,8 @@ board.show()
 
 reina = queen("white", [5, 4], "queen")
 print(reina.possible_move(rook, bishoop))
+=======
+            simbol = "♚"
+
+        return simbol
+>>>>>>> game_loop

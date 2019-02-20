@@ -140,3 +140,6 @@ import pieces
 # pos1 = "A1"
 # pos1 = [positionY[pos1[0]], int(pos1[1])]
 # print(pos1)
+
+pieces.board.fill()
+pieces.board.show()
