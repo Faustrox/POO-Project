@@ -44,6 +44,12 @@ while True:
     piece_select = menu.pieces.board.game_board[int(
         piece_select[1])][menu.pieces.board.positionY[piece_select[0]]]
 
+    if isinstance(piece_select, menu.pieces.piece) is False:
+
+        # CLEAR
+        print("That isn't a piece, please select a valid piece")
+        continue
+
     if piece_select.team != team[turn]:
         # CLEAR
         print("This piece is of the other team, please select one that you can take")
@@ -55,6 +61,10 @@ while True:
             print("You select a ", piece_select.name, " in the positon ", position_name)
             print("Digit the position where you want to move it: (If you put 0 you can return to select another piece)")
             move_to = input()
+            move_to = str(move_to)
+
+            if move_to[0] in minus:
+                move_to = chr(ord(move_to[0]) - 32) + move_to[1]
 
             if is_it_possible(move_to) is False:
 
@@ -69,15 +79,15 @@ while True:
 
             else:
 
-                if isinstance(piece_select.move(menu.pieces.board, move_to), str) is True:
+                if isinstance(piece_select.move(move_to), str) is True:
                     # CLEAR
-                    print(piece_select.move(menu.pieces.board, move_to))
+                    print(piece_select.move(move_to))
                     menu.pieces.board.show()
                     continue
 
                 else:
 
-                    menu.pieces.piece_select.move(menu.pieces.board, move_to)
+                    piece_select.move(move_to)
                     turn += 1
                     break
 
