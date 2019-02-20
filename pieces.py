@@ -500,11 +500,11 @@ class king(piece):  # PROGRESS
 
 board.fill()
 board.show()
-caballo = knight("white", [5, 4], "")
-print (caballo.possible_move())
+##caballo = knight("white", [5, 4], "")
+##print (caballo.possible_move())
 ##torre = rook("white", [3, 1], "rook") #la primera posicion es la fila
 ##print(torre.possible_move())
 
 
-##reina = queen("white", [5,4], "queen")
-##print(reina.possible_move(rook ,bishoop))
+reina = queen("white", [5,4], "queen")
+print(reina.possible_move(rook ,bishoop))
