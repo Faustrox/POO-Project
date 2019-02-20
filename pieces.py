@@ -461,9 +461,14 @@ class queen(piece):
         else:
             return " B "
 
-    def possible_move(self, pieza, pieza2):
-        self.arraym = pieza.possible_move() + pieza2.possible_move(board)
+    def possible_move(self):
+        pos = [int(self.pos[1]), board.positionY[self.pos[0]]]
+        torre = rook(self.team, [pos[1], pos[0]], "rook")
+        alfil = bishoop(self.team, [pos[0], pos[1]], "bishoop")
+        self.arraym = torre.possible_move() + alfil.possible_move(board)
         return self.arraym
+
+    
 
 class king(piece):  # PROGRESS
 
@@ -500,11 +505,7 @@ class king(piece):  # PROGRESS
 
 board.fill()
 board.show()
-caballo = knight("white", [5, 4], "")
-print (caballo.possible_move())
-##torre = rook("white", [3, 1], "rook") #la primera posicion es la fila
-##print(torre.possible_move())
-
-
-##reina = queen("white", [5,4], "queen")
-##print(reina.possible_move(rook ,bishoop))
+reina = queen("white", [1 , 3], "queen")
+alfil = bishoop("white", [1 , 3], "queen")
+#print(reina.possible_move())
+print (alfil.possible_move(board))
