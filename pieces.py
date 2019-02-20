@@ -75,7 +75,7 @@ class board():
 
                 if (fila == 7):
                     self.game_board[fila][columna] = pawn(
-                        "white", [fila, columna, "pawn"])  # peones
+                        "white", [fila, columna], "pawn")  # peones
 
 
 board = board()
@@ -95,8 +95,8 @@ class piece():
 
     # def eat(self, pos2):
 
-    def move(self, board, self.possible_move(board), pos2):
-
+    def move(self, board, pos2):
+        array = self.possible_move(board)
         pos1 = [int(self.pos[1]), board.positionY[self.pos[0]]]
         pos2_name = pos2
         pos2 = [int(pos2[1]), board.positionY[pos2[0]]]
@@ -189,6 +189,10 @@ class pawn(piece):
 class knight(piece):
     # A knight (in spanish called horse), it can do a move of L in any directions
     # A knight can... like jump others pieces
+    def __init__(self, pos, team, name):
+        super().__init__(pos, team, name)
+        self.arraym = []
+
     def __str__(self):  # function para que no imprima en lenguaje maquina
         if self.pos[0] == "A":
             return "H "
@@ -199,42 +203,26 @@ class knight(piece):
         else:
             return " H "
 
-<<<<<<< HEAD
-=======
-    def __init__(self, pos, team):
-        super().__init__(pos, team)
 
-    # Progress
+    def possible_move(self):
+        new_pos = []
+        pos = [board.positionY[self.pos[0]], int(self.pos[1])] 
+        posY = [[2, -1], [2, 1], [-2, 1], [-2, -1]]    #posiciones arriba y abajo del caballo
+        posX = [[-1, 2], [1, 2], [1, -2], [-1, -2]]    # posiciones laterales
+        for i in posY:
+            if (isinstance(board.game_board[pos[0] + i[0]][pos[1] + i[1]], piece )) is False:
+                new_pos.append(str(self.positionY[pos[1] + i[1]]) + str(pos[0] + i[0]))
+            elif board.game_board[pos[0] + i[0]][pos[1] + i[1]].team != self.team:
+                new_pos.append(str(self.positionY[pos[1] + i[1]]) + str(pos[0] + i[0]))
+    
+        for i in posX:
+            if (isinstance(board.game_board[pos[0] + i[0]][pos[1] + i[1]], piece )) is False:
+                new_pos.append(str(self.positionY[pos[1] + i[1]]) + str(pos[0] + i[0]))
+            elif board.game_board[pos[0] + i[0]][pos[1] + i[1]].team != self.team:
+                new_pos.append(str(self.positionY[pos[1] + i[1]]) + str(pos[0] + i[0]))
+                
+        return new_pos
 
-    # def possible_move(self, board, pos):
-    #     pos[int(self.pos[1]), board.positionY[self.pos[0]]]
-    #     moveL = False
-    #
-    #     if self.team == "black":
-    #         moveL = pos
-    #         moveL[0] += 1
-    #
-    #     elif self.team == "white":
-    #         moveL = pos
-    #         moveL[0] -= 1
-    #
-    # def movementL(self, x, y, board):
-    #     new_mov = []
-    #     movL = [(-1, -2), (-1, 2), (-2, -1), (-2, 1), (1, -2), (1, 2), (2, -1), (2, 1)]
-    #     for i in movL:
-    #         newX = x + i[0]
-    #         newY = y + i[1]
-    #         if possible(newX, board) and possible(newY, board):
-    #             new_mov.append(newX, newY)
-    #         return new_mov
-    #
-    # def possible(self, x, newY):
-    #     if x >= 0 and x < board:
-    #         return True
-    #     else:
-    #         return False
-
->>>>>>> start_gameloop
 
 class bishoop(piece):
 
@@ -327,7 +315,7 @@ class bishoop(piece):
 
                 else:
                     can_beL = False
-
+ 
             else:
                 can_beL = False
 
@@ -459,22 +447,10 @@ class rook(piece):
 
 class queen(piece):
 
-<<<<<<< HEAD
-    def __init__(self, pos, team):
-        super().__init__(pos, team)
-<<<<<<< HEAD
-<<<<<<< HEAD
-
-=======
+    def __init__(self, pos, team, name):
+        super().__init__(pos, team, name)
         self.arraym = []
     
->>>>>>> Reina
-=======
->>>>>>> b79bae11cd8fa177294a5383882ee5656b7e6c02
-=======
-        self.arraym = []
-
->>>>>>> Reina
     def __str__(self):  # function para que no imprima en lenguaje maquina
         if self.pos[0] == "A":
             return "B "
@@ -485,25 +461,9 @@ class queen(piece):
         else:
             return " B "
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-    def possible_move(self):
-        super().possible_move(board.game_board)
-        print(self.array)
-
-=======
-    def possible_move(self, pieza, pieza2):
-        print (pieza.possible_move(), "  ", pieza2.possible_move(board))
-   
-        
-        
->>>>>>> Reina
-=======
-
     def possible_move(self, pieza, pieza2):
         self.arraym = pieza.possible_move() + pieza2.possible_move(board)
         return self.arraym
->>>>>>> Reina
 
 class king(piece):  # PROGRESS
 
@@ -526,9 +486,8 @@ class king(piece):  # PROGRESS
 
         return array
 
+
     def __str__(self):  # function para que no imprima en lenguaje maquina
-<<<<<<< HEAD
-<<<<<<< HEAD
         if self.pos[0] == "A":
             return "K "
 
@@ -537,19 +496,15 @@ class king(piece):  # PROGRESS
 
         else:
             return " K "
-=======
-=======
->>>>>>> Reina
-        return "K"
+        
 
 board.fill()
 board.show()
-#piece = piece("white", [8, 5])
-torre = rook("white", [4, 4])
-alfil = bishoop("white", [4, 4])
-reina = queen("white", [ 3, 1])
-print (reina.possible_move(torre, alfil))
-<<<<<<< HEAD
->>>>>>> Reina
-=======
->>>>>>> Reina
+caballo = knight("white", [5, 4], "")
+print (caballo.possible_move())
+##torre = rook("white", [3, 1], "rook") #la primera posicion es la fila
+##print(torre.possible_move())
+
+
+##reina = queen("white", [5,4], "queen")
+##print(reina.possible_move(rook ,bishoop))
