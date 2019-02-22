@@ -220,12 +220,21 @@ class knight(piece):
         posY = [[2, -1], [2, 1], [-2, 1], [-2, -1]]  # posiciones arriba y abajo del caballo
         posX = [[-1, 2], [1, 2], [1, -2], [-1, -2]]    # posiciones laterales
         for i in posY:
+            if pos[1] + i[1] < 1 or pos[1] + i[1] > 8:
+                continue
+            if pos[0] + i[0] < 1 or pos[0] + i[0] > 8:
+                continue
             if (isinstance(board.game_board[pos[0] + i[0]][pos[1] + i[1]], piece)) is False:
                 new_pos.append(str(self.positionY[pos[1] + i[1]]) + str(pos[0] + i[0]))
             elif board.game_board[pos[0] + i[0]][pos[1] + i[1]].team != self.team:
                 new_pos.append(str(self.positionY[pos[1] + i[1]]) + str(pos[0] + i[0]))
 
         for i in posX:
+            if pos[1] + i[1] < 1 or pos[1] + i[1] > 8:
+                continue
+            if pos[0] + i[0] < 1 or pos[0] + i[0] > 8:
+                continue
+            print (pos[1] + i[1], pos[0] + i[0])
             if (isinstance(board.game_board[pos[0] + i[0]][pos[1] + i[1]], piece)) is False:
                 new_pos.append(str(self.positionY[pos[1] + i[1]]) + str(pos[0] + i[0]))
             elif board.game_board[pos[0] + i[0]][pos[1] + i[1]].team != self.team:
@@ -509,3 +518,13 @@ class king(piece):  # PROGRESS
             simbol = "♚"
 
         return simbol
+<<<<<<< HEAD
+=======
+
+
+board.fill()
+board.show()
+
+caballo = knight("white", [8, 8], "")
+print (caballo.possible_move())
+>>>>>>> afdaeb1775510d1a170ba10fff61c54ca1d29b5b
