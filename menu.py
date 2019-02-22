@@ -9,7 +9,7 @@
 # 8 R K B Q K B K R
 
 import pieces
-
+def cls(): print("\n" * 35)
 
 print("Welcome to a Chess\n")
 
@@ -23,13 +23,13 @@ def menu():
         option = int(input())
 
         if option == 1:
-            # CLEAR
+            cls()
             print("The board was created\n")
             pieces.board.fill()
             break
 
         else:
-            # CLEAR
+            cls()
             print("I said you that its in progress")
 
 

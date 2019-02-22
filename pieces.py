@@ -15,16 +15,18 @@ class board():
                                "", "", "", "", "", "", "", ""],
                            [" \t", " A ", " B ", " C ", " D ", " E ", " F ", " G ", " H", ""]]
         # Dise
-        self.empty_board = [[" \t", "A ", " B ", " C ", " D ", " E ", " F ", " G ", " H\n"],
-                            ["1\t", "▓", "░", "▓", "░", "▓", "░", "▓", "░"],
-                            ["2\t", "░", "▓", "░", "▓", "░", "▓", "░", "▓"],
-                            ["3\t", "▓", "░", "▓", "░", "▓", "░", "▓", "░"],
-                            ["4\t", "░", "▓", "░", "▓", "░", "▓", "░", "▓"],
-                            ["5\t", "▓", "░", "▓", "░", "▓", "░", "▓", "░"],
-                            ["6\t", "░", "▓", "░", "▓", "░", "▓", "░", "▓"],
-                            ["7\t", "▓", "░", "▓", "░", "▓", "░", "▓", "░"],
-                            ["8\t", "░", "▓", "░", "▓", "░", "▓", "░", "▓"],
-                            [" \t", "A ", " B ", " C ", " D ", " E ", " F ", " G ", " H"]]
+        self.empty_board = [["                 ", "+---------------------------+", "", "", "", "", "", "", "", ""],
+                           ["1\t|", "▓", "░", "▓", "░", "▓", "░", "▓", "░", "|"],
+                           ["2\t|", "░", "▓", "░", "▓", "░", "▓", "░", "▓", "|"],
+                           ["3\t|", "▓", "░", "▓", "░", "▓", "░", "▓", "░", "|"],
+                           ["4\t|", "░", "▓", "░", "▓", "░", "▓", "░", "▓", "|"],
+                           ["5\t|", "▓", "░", "▓", "░", "▓", "░", "▓", "░", "|"],
+                           ["6\t|", "░", "▓", "░", "▓", "░", "▓", "░", "▓", "|"],
+                           ["7\t|", "▓", "░", "▓", "░", "▓", "░", "▓", "░", "|"],
+                           ["8\t|", "░", "▓", "░", "▓", "░", "▓", "░", "▓", "|"],
+                           ["                 ", "+---------------------------+",
+                               "", "", "", "", "", "", "", ""],
+                           [" \t", " A ", " B ", " C ", " D ", " E ", " F ", " G ", " H", ""]]
         # Se le da valor a las posiciones para leer las columnas
         self.positionY = {"A": 1, "B": 2, "C": 3, "D": 4, "E": 5, "F": 6, "G": 7, "H": 8}
 
@@ -109,6 +111,7 @@ class piece():
 
         if pos2_name in array:
 
+            board.game_board[pos2[0]][pos2[1]] = board.empty_board[pos2[0]][pos2[1]]
             board.game_board[pos1[0]][pos1[1]] = board.empty_board[pos1[0]][pos1[1]]
             self.pos = self.positionY[pos2[1]] + str(pos2[0])
             board.game_board[pos2[0]][pos2[1]] = piece
@@ -143,10 +146,10 @@ class pawn(piece):
             move_forward[0] -= 1
 
         # desplazamiento de las posiciones de las fichas
-        if pos[0] >= 1 and pos[0] >= 8:
+        if pos[1] >= 1 and pos[1] < 8:
             move_RD = [move_forward[0], move_forward[1] + 1]
 
-        if pos[0] <= 8 and pos[0] >= 1:
+        if pos[1] > 1 and pos[1] <= 8:
             move_LD = [move_forward[0], move_forward[1] - 1]
 
         if isinstance(board.game_board[move_forward[0]][move_forward[1]], piece) is False:
@@ -263,7 +266,7 @@ class bishoop(piece):
             else:
                 can_beR = False
 
-            if move_LD[0] > 0 and move_RD[1] > 0 and can_beL is True:
+            if move_LD[0] > 0 and move_LD[1] > 0 and can_beL is True:
 
                 if isinstance(board.game_board[move_LD[0]][move_LD[1]], piece) is False:
 
@@ -469,16 +472,11 @@ class queen(piece):
         return simbol
 
     def possible_move(self):
-<<<<<<< HEAD
         pos = [int(self.pos[1]), board.positionY[self.pos[0]]]
         torre = rook(self.team, [pos[1], pos[0]], "rook")
         alfil = bishoop(self.team, [pos[0], pos[1]], "bishoop")
         self.arraym = torre.possible_move() + alfil.possible_move(board)
         return self.arraym
-=======
-        super().possible_move()
-        print(self.array)
->>>>>>> game_loop
 
 
 class king(piece):  # PROGRESS
@@ -508,22 +506,6 @@ class king(piece):  # PROGRESS
             simbol = "♔"
 
         else:
-<<<<<<< HEAD
-            return " K "
-
-
-board.fill()
-board.show()
-##caballo = knight("white", [5, 4], "")
-##print (caballo.possible_move())
-# torre = rook("white", [3, 1], "rook") #la primera posicion es la fila
-# print(torre.possible_move())
-
-
-reina = queen("white", [5, 4], "queen")
-print(reina.possible_move(rook, bishoop))
-=======
             simbol = "♚"
 
         return simbol
->>>>>>> game_loop
