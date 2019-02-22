@@ -217,12 +217,21 @@ class knight(piece):
         posY = [[2, -1], [2, 1], [-2, 1], [-2, -1]]  # posiciones arriba y abajo del caballo
         posX = [[-1, 2], [1, 2], [1, -2], [-1, -2]]    # posiciones laterales
         for i in posY:
+            if pos[1] + i[1] < 1 or pos[1] + i[1] > 8:
+                continue
+            if pos[0] + i[0] < 1 or pos[0] + i[0] > 8:
+                continue
             if (isinstance(board.game_board[pos[0] + i[0]][pos[1] + i[1]], piece)) is False:
                 new_pos.append(str(self.positionY[pos[1] + i[1]]) + str(pos[0] + i[0]))
             elif board.game_board[pos[0] + i[0]][pos[1] + i[1]].team != self.team:
                 new_pos.append(str(self.positionY[pos[1] + i[1]]) + str(pos[0] + i[0]))
 
         for i in posX:
+            if pos[1] + i[1] < 1 or pos[1] + i[1] > 8:
+                continue
+            if pos[0] + i[0] < 1 or pos[0] + i[0] > 8:
+                continue
+            print (pos[1] + i[1], pos[0] + i[0])
             if (isinstance(board.game_board[pos[0] + i[0]][pos[1] + i[1]], piece)) is False:
                 new_pos.append(str(self.positionY[pos[1] + i[1]]) + str(pos[0] + i[0]))
             elif board.game_board[pos[0] + i[0]][pos[1] + i[1]].team != self.team:
@@ -469,16 +478,11 @@ class queen(piece):
         return simbol
 
     def possible_move(self):
-<<<<<<< HEAD
         pos = [int(self.pos[1]), board.positionY[self.pos[0]]]
         torre = rook(self.team, [pos[1], pos[0]], "rook")
         alfil = bishoop(self.team, [pos[0], pos[1]], "bishoop")
         self.arraym = torre.possible_move() + alfil.possible_move(board)
         return self.arraym
-=======
-        super().possible_move()
-        print(self.array)
->>>>>>> game_loop
 
 
 class king(piece):  # PROGRESS
@@ -508,30 +512,13 @@ class king(piece):  # PROGRESS
             simbol = "♔"
 
         else:
-<<<<<<< HEAD
-            return " K "
+            simbol = "♚"
+
+        return simbol
 
 
 board.fill()
 board.show()
-<<<<<<< HEAD
-##caballo = knight("white", [5, 4], "")
-##print (caballo.possible_move())
-# torre = rook("white", [3, 1], "rook") #la primera posicion es la fila
-# print(torre.possible_move())
 
-
-reina = queen("white", [5, 4], "queen")
-print(reina.possible_move(rook, bishoop))
-=======
-            simbol = "♚"
-
-        return simbol
->>>>>>> game_loop
-=======
-reina = queen("white", [1 , 3], "queen")
-torre = rook("white", [1 , 3], "queen")
-alfil = bishoop("white", [1 , 3], "queen")
-#print(reina.possible_move())
-print (torre.possible_move())
->>>>>>> Reina
+caballo = knight("white", [8, 8], "")
+print (caballo.possible_move())
