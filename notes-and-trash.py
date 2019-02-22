@@ -141,3 +141,8 @@ import pieces
 # pos1 = [positionY[pos1[0]], int(pos1[1])]
 # print(pos1)
 
+
+torre1 = pieces.rook("white", [1, 8], "torre")
+pieces.board.game_board[8][1] = torre1
+
+print(pieces.board.game_board.possible_move())

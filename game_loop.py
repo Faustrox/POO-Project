@@ -52,12 +52,13 @@ while True:
     if piece_select.team != team[turn]:
         menu.cls()
         print("This piece is of the other team, please select one that you can take")
+        continue
 
     elif isinstance(piece_select, menu.pieces.piece) is True:
+        menu.cls()
 
         while True:
 
-            menu.cls()
 
             print("It's the turn for the ", team[turn], " team")
             menu.pieces.board.show()
@@ -72,10 +73,12 @@ while True:
             if is_it_possible(move_to) is False:
 
                 if move_to == "0":
+                    menu.cls()
                     print("You decide to change the piece, player from team ", team[turn])
                     break
 
                 else:
+                    menu.cls()
                     print(
                         "That position doesn't exist, please select a valid position, player from team ", team[turn])
                     continue
