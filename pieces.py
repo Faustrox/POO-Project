@@ -485,7 +485,7 @@ class queen(piece):
         pos = [int(self.pos[1]), board.positionY[self.pos[0]]]
         torre = rook(self.team, [pos[1], pos[0]], "rook")
         alfil = bishoop(self.team, [pos[0], pos[1]], "bishoop")
-        self.arraym = torre.possible_move() + alfil.possible_move(board)
+        self.arraym = torre.possible_move() + alfil.possible_move()
         return self.arraym
 
 
@@ -521,6 +521,7 @@ class king(piece):  # PROGRESS
         return simbol
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 
 
@@ -533,3 +534,5 @@ print (caballo.possible_move())
 =======
 
 >>>>>>> game_loop
+=======
+>>>>>>> arreglos
