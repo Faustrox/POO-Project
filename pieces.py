@@ -417,7 +417,7 @@ class rook(piece):
         # Movimiento Horizontal
         # movimientos horizontal a la derecha
         # for que recorre la posiciones a la derecha
-        for i in range(pos[1] + 1, len(board.game_board[int(pos[1])])):
+        for i in range(pos[1] + 1, len(board.game_board[int(pos[1])]) - 1):
             # la variable son las posiciones en el board este caso a la izq.
             pieces_right = board.game_board[pos[0]][i]
             j = 0
@@ -481,7 +481,7 @@ class queen(piece):
         pos = [int(self.pos[1]), board.positionY[self.pos[0]]]
         torre = rook(self.team, [pos[1], pos[0]], "rook")
         alfil = bishoop(self.team, [pos[0], pos[1]], "bishoop")
-        self.arraym = torre.possible_move() + alfil.possible_move(board)
+        self.arraym = torre.possible_move() + alfil.possible_move()
         return self.arraym
 
 
@@ -515,10 +515,3 @@ class king(piece):  # PROGRESS
             simbol = "♚"
 
         return simbol
-
-
-board.fill()
-board.show()
-
-caballo = knight("white", [8, 8], "")
-print (caballo.possible_move())
