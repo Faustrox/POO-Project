@@ -368,7 +368,6 @@ class rook(piece):
     # a pawn is that the rook can move more than one step
     def __init__(self, pos, team, name):
         super().__init__(pos, team, name)
-        self.arraym = []  # variable que guarda las posiciones
 
     def __str__(self):  # function para que no imprima en lenguaje maquina
 
@@ -381,6 +380,7 @@ class rook(piece):
         return simbol
 
     def possible_move(self):
+        arraym = []
         pos = [board.positionY[self.pos[0]], int(self.pos[1])]
         pieces_name = [pawn, knight, bishoop, rook, queen, king]
         # Movimiento Vertical
@@ -394,15 +394,15 @@ class rook(piece):
                     objecto = True
                     if self.team == "white":  # si el objeto es de diferente team se agrega su pos
                         if pos_arriba.team == 'black':  # de lo contrario no se agrega y se retornan la posiciones
-                            self.arraym.append(str(self.positionY[pos[1]]) + str(i))
+                            arraym.append(str(self.positionY[pos[1]]) + str(i))
                     if self.team == "black":
                         if pos_arriba.team == 'white':
-                            self.arraym.append(str(self.positionY[pos[1]]) + str(i))
+                            arraym.append(str(self.positionY[pos[1]]) + str(i))
                 j += 1
             if objecto is True:
                 break
             else:
-                self.arraym.append(str(self.positionY[pos[1]]) + str(i))
+                arraym.append(str(self.positionY[pos[1]]) + str(i))
 
         # Movimiento Vertical hacia abajo
         for i in range(pos[0] + 1, len(board.game_board) - 2):
@@ -414,15 +414,15 @@ class rook(piece):
                     objecto = True
                     if self.team == "white":  # si el objeto es de diferente team se agrega su pos
                         if pos_abajo.team == 'black':  # de lo contrario no se agrega y se retornan la posiciones
-                            self.arraym.append(str(self.positionY[pos[1]]) + str(i))
+                            arraym.append(str(self.positionY[pos[1]]) + str(i))
                     if self.team == "black":
                         if pos_abajo.team == 'white':
-                            self.arraym.append(str(self.positionY[pos[1]]) + str(i))
+                            arraym.append(str(self.positionY[pos[1]]) + str(i))
                 j += 1
             if objecto is True:
                 break
             else:
-                self.arraym.append(str(self.positionY[pos[1]]) + str(i))
+               arraym.append(str(self.positionY[pos[1]]) + str(i))
 
         # Movimiento Horizontal
         # movimientos horizontal a la derecha
@@ -437,15 +437,15 @@ class rook(piece):
                     objecto = True
                     if self.team == "white":  # si el objeto es de diferente team se agrega su pos
                         if pieces_right.team == 'black':  # de lo contrario no se agrega y se retornan la posiciones
-                            self.arraym.append(str(self.positionY[i]) + str(pos[0]))
+                            arraym.append(str(self.positionY[i]) + str(pos[0]))
                     if self.team == "black":
                         if pieces_right.team == 'white':
-                            self.arraym.append(str(self.positionY[i]) + str(pos[0]))
+                            arraym.append(str(self.positionY[i]) + str(pos[0]))
                 j += 1
             if objecto is True:
                 break
             else:
-                self.arraym.append(str(self.positionY[i]) + str(pos[0]))
+                arraym.append(str(self.positionY[i]) + str(pos[0]))
 
         # movimientos horizontal a la izquierda
         # for que recorre la posiciones a la izquierda, el for se para cuando encuentra un objeto
@@ -459,16 +459,16 @@ class rook(piece):
                     objecto = True
                     if self.team == "white":  # si el objeto es de diferente team se agrega su pos
                         if pieces_left.team == 'black':  # de lo contrario no se agrega y se retornan la posiciones
-                            self.arraym.append(str(self.positionY[i]) + str(pos[0]))
+                            arraym.append(str(self.positionY[i]) + str(pos[0]))
                     if self.team == "black":
                         if pieces_left.team == 'white':
-                            self.arraym.append(str(self.positionY[i]) + str(pos[0]))
+                            arraym.append(str(self.positionY[i]) + str(pos[0]))
                 j += 1
             if objecto is True:
                 break
             else:
-                self.arraym.append(str(self.positionY[i]) + str(pos[0]))
-        return self.arraym
+                arraym.append(str(self.positionY[i]) + str(pos[0]))
+        return arraym
 
 
 class queen(piece):
@@ -489,9 +489,10 @@ class queen(piece):
 
     def possible_move(self):
         pos = [int(self.pos[1]), board.positionY[self.pos[0]]]
-        torre = rook(self.team, [pos[1], pos[0]], "rook")
+        print (pos[0], pos[1])
+        torre = rook(self.team, [pos[0], pos[1]], "rook")
         alfil = bishoop(self.team, [pos[0], pos[1]], "bishoop")
-        self.arraym = torre.possible_move() + alfil.possible_move(board)
+        self.arraym = torre.possible_move() + alfil.possible_move()
         return self.arraym
 
 
