@@ -29,6 +29,7 @@ class board():
                            [" \t", " A ", " B ", " C ", " D ", " E ", " F ", " G ", " H", ""]]
         # Se le da valor a las posiciones para leer las columnas
         self.positionY = {"A": 1, "B": 2, "C": 3, "D": 4, "E": 5, "F": 6, "G": 7, "H": 8}
+        self.kings = {"white": [], "black": []}
 
     def show(self):
         # Muestra los objetos en el tablero
@@ -54,8 +55,10 @@ class board():
                         self.game_board[fila][columna] = queen(
                             "black", [fila, columna], "queen")  # reina
                     if (columna == 5):
+                        self.kings["black"] = [fila, columna]
                         self.game_board[fila][columna] = king(
-                            "black", [fila, columna], "king")  # rey
+                            "black", [fila, columna], "king")  # rey.
+
                 if (fila == 2):
                     self.game_board[fila][columna] = pawn(
                         "black", [fila, columna], "pawn")  # peones
@@ -76,6 +79,7 @@ class board():
                         self.game_board[fila][columna] = queen(
                             "white", [fila, columna], "queen")  # reina
                     if (columna == 4):
+                        self.kings["white"] = [fila, columna]
                         self.game_board[fila][columna] = king(
                             "white", [fila, columna], "king")  # rey
 
@@ -108,6 +112,10 @@ class piece():
         pos2_name = pos2
         pos2 = [int(pos2[1]), board.positionY[pos2[0]]]
         piece = board.game_board[pos1[0]][pos1[1]]
+
+        if piece == "♔" or piece == "♚":
+
+            board.kings[piece.team] = pos1
 
         if pos2_name in array:
 
@@ -214,25 +222,25 @@ class knight(piece):
 
         return simbol
 
-    def possible_move(self):
-        new_pos = []
-        pos = [board.positionY[self.pos[0]], int(self.pos[1])]
-        posY = [[2, -1], [2, 1], [-2, 1], [-2, -1]]  # posiciones arriba y abajo del caballo
-        posX = [[-1, 2], [1, 2], [1, -2], [-1, -2]]    # posiciones laterales
-        for i in posY:
-            if (isinstance(board.game_board[pos[0] + i[0]][pos[1] + i[1]], piece)) is False:
-                if ():
-                new_pos.append(str(self.positionY[pos[1] + i[1]]) + str(pos[0] + i[0]))
-            elif board.game_board[pos[0] + i[0]][pos[1] + i[1]].team != self.team:
-                new_pos.append(str(self.positionY[pos[1] + i[1]]) + str(pos[0] + i[0]))
+    # def possible_move(self):
+    #     new_pos = []
+    #     pos = [board.positionY[self.pos[0]], int(self.pos[1])]
+    #     posY = [[2, -1], [2, 1], [-2, 1], [-2, -1]]  # posiciones arriba y abajo del caballo
+    #     posX = [[-1, 2], [1, 2], [1, -2], [-1, -2]]    # posiciones laterales
+    #     for i in posY:
+    #         if (isinstance(board.game_board[pos[0] + i[0]][pos[1] + i[1]], piece)) is False:
+    #             if ():
+    #             new_pos.append(str(self.positionY[pos[1] + i[1]]) + str(pos[0] + i[0]))
+    #         elif board.game_board[pos[0] + i[0]][pos[1] + i[1]].team != self.team:
+    #             new_pos.append(str(self.positionY[pos[1] + i[1]]) + str(pos[0] + i[0]))
 
-        for i in posX:
-            if (isinstance(board.game_board[pos[0] + i[0]][pos[1] + i[1]], piece)) is False:
-                new_pos.append(str(self.positionY[pos[1] + i[1]]) + str(pos[0] + i[0]))
-            elif board.game_board[pos[0] + i[0]][pos[1] + i[1]].team != self.team:
-                new_pos.append(str(self.positionY[pos[1] + i[1]]) + str(pos[0] + i[0]))
+    #     for i in posX:
+    #         if (isinstance(board.game_board[pos[0] + i[0]][pos[1] + i[1]], piece)) is False:
+    #             new_pos.append(str(self.positionY[pos[1] + i[1]]) + str(pos[0] + i[0]))
+    #         elif board.game_board[pos[0] + i[0]][pos[1] + i[1]].team != self.team:
+    #             new_pos.append(str(self.positionY[pos[1] + i[1]]) + str(pos[0] + i[0]))
 
-        return new_pos
+    #     return new_pos
 
 
 class bishoop(piece):
@@ -480,7 +488,7 @@ class queen(piece):
         return self.arraym
 
 
-class king(piece):  # PROGRESS
+class king(piece):
 
     def possible_move(self):
 
@@ -489,15 +497,28 @@ class king(piece):  # PROGRESS
         container = [[1, 0], [-1, 0], [0, 1], [0, -1], [1, 1], [-1, -1], [1, -1], [-1, 1]]
 
         for entry in container:
+            move = True
             new_pos = [pos[0] + entry[0], pos[1] + entry[1]]
 
             if new_pos[0] > 0 and new_pos[0] < 9 and new_pos[1] > 0 and new_pos[1] < 9:
 
-                if isinstance(board.game_board[new_pos[0]][new_pos[1]], piece) is False:
-                    array.append(self.positionY[new_pos[1]] + str(new_pos[0]))
+                for x in board.game_board:
 
-                elif board.game_board[new_pos[0]][new_pos[1]].team != self.team:
-                    array.append(self.positionY[new_pos[1]] + str(new_pos[0]))
+                    for y in x:
+
+                        if isinstance(board.game_board[x][y], piece) is True and board.game_board.team != self.team:
+
+                            if new_pos in board.game_board[x][y].possible_move:
+
+                                move = False
+
+                    if move is True:
+
+                        if isinstance(board.game_board[new_pos[0]][new_pos[1]], piece) is False:
+                            array.append(self.positionY[new_pos[1]] + str(new_pos[0]))
+
+                        elif board.game_board[new_pos[0]][new_pos[1]].team != self.team:
+                            array.append(self.positionY[new_pos[1]] + str(new_pos[0]))
 
         return array
 
@@ -510,4 +531,3 @@ class king(piece):  # PROGRESS
             simbol = "♚"
 
         return simbol
-
