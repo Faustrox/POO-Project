@@ -11,6 +11,8 @@ def check(team):
     first = False
     second = False
     third = False
+    check = False
+    checkmate = False
     
     ally_pieces = menu.pieces.board.ally_pieces(team)
     for piece in ally_pieces:
@@ -24,17 +26,30 @@ def check(team):
 
         if allay_king.pos in enemy_piece.possibe_move:
 
-            first = True
+            check = True
 
             for ally_piece in ally_pieces:
 
                 if enemy_piece.pos in ally_piece.possible_move:
 
-                    third = True
+                    first = True
         
         if len(allay_king.possible_move) > 0:
 
             second = True
+
+        if  :
+
+            third = True
+
+    if check is True and first is False and second is False and third is False:
+
+        checkmate = True
+        return "Is Chakmate, ", team, " team lose"
+
+    elif check is True and first is True or second is True or third is True:
+
+        return "The ", team, " team is in check"
 
 
 def is_it_possible(pos):

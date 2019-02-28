@@ -91,8 +91,8 @@ class board():
 
         array = []
 
-        for x in self.game_board:
-            for y in x:
+        for x in range(1, 9):
+            for y in range(1, 9):
 
                 if isinstance(self.game_board[x][y], piece) is True and self.game_board[x][y].team == team:
 
@@ -104,8 +104,8 @@ class board():
 
         array = []
 
-        for x in self.game_board:
-            for y in x:
+        for x in range(1, 9):
+            for y in range(1, 9):
 
                 if isinstance(self.game_board[x][y], piece) is True and self.game_board[x][y].team != team:
 
@@ -527,23 +527,22 @@ class king(piece):
 
             if new_pos[0] > 0 and new_pos[0] < 9 and new_pos[1] > 0 and new_pos[1] < 9:
 
-                for x in board.game_board:
+                for enemy_piece in board.enemy_pieces(self.team):
 
-                    for y in x:
+                    new_pos_str = self.positionY[new_pos[1]] + str(new_pos[0])
 
-                        if isinstance(board.game_board[x][y], piece) is True and board.game_board.team != self.team:
+                    if new_pos_str in enemy_piece.possible_move():
 
-                            if new_pos in board.game_board[x][y].possible_move:
+                        move = False
+                        break
 
-                                move = False
+                if move is True:
 
-                    if move is True:
+                    if isinstance(board.game_board[new_pos[0]][new_pos[1]], piece) is False:
+                        array.append(self.positionY[new_pos[1]] + str(new_pos[0]))
 
-                        if isinstance(board.game_board[new_pos[0]][new_pos[1]], piece) is False:
-                            array.append(self.positionY[new_pos[1]] + str(new_pos[0]))
-
-                        elif board.game_board[new_pos[0]][new_pos[1]].team != self.team:
-                            array.append(self.positionY[new_pos[1]] + str(new_pos[0]))
+                    elif board.game_board[new_pos[0]][new_pos[1]].team != self.team:
+                        array.append(self.positionY[new_pos[1]] + str(new_pos[0]))
 
         return array
 
