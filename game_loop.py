@@ -1,10 +1,11 @@
 import menu
 
+piece = menu.pieces.piece
 turn = 0
 team = ["white", "black"]
 minus = ["a", "b", "c", "d", "e", "f", "g", "h"]
 
-
+    
 def is_it_possible(pos):
 
     for Fstring in menu.pieces.board.positionY:
@@ -88,7 +89,6 @@ while True:
                 if isinstance(piece_select.move(move_to), str) is True:
                     menu.cls()
                     print(piece_select.move(move_to))
-                    menu.pieces.board.show()
                     continue
 
                 else:
