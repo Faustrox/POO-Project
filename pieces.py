@@ -15,18 +15,21 @@ class board():
                                "", "", "", "", "", "", "", ""],
                            [" \t", " A ", " B ", " C ", " D ", " E ", " F ", " G ", " H", ""]]
         # Dise
-        self.empty_board = [[" \t", "A ", " B ", " C ", " D ", " E ", " F ", " G ", " H\n"],
-                            ["1\t", "▓", "░", "▓", "░", "▓", "░", "▓", "░"],
-                            ["2\t", "░", "▓", "░", "▓", "░", "▓", "░", "▓"],
-                            ["3\t", "▓", "░", "▓", "░", "▓", "░", "▓", "░"],
-                            ["4\t", "░", "▓", "░", "▓", "░", "▓", "░", "▓"],
-                            ["5\t", "▓", "░", "▓", "░", "▓", "░", "▓", "░"],
-                            ["6\t", "░", "▓", "░", "▓", "░", "▓", "░", "▓"],
-                            ["7\t", "▓", "░", "▓", "░", "▓", "░", "▓", "░"],
-                            ["8\t", "░", "▓", "░", "▓", "░", "▓", "░", "▓"],
-                            [" \t", "A ", " B ", " C ", " D ", " E ", " F ", " G ", " H"]]
+        self.empty_board = [["                 ", "+---------------------------+", "", "", "", "", "", "", "", ""],
+                            ["1\t|", "▓", "░", "▓", "░", "▓", "░", "▓", "░", "|"],
+                            ["2\t|", "░", "▓", "░", "▓", "░", "▓", "░", "▓", "|"],
+                            ["3\t|", "▓", "░", "▓", "░", "▓", "░", "▓", "░", "|"],
+                            ["4\t|", "░", "▓", "░", "▓", "░", "▓", "░", "▓", "|"],
+                            ["5\t|", "▓", "░", "▓", "░", "▓", "░", "▓", "░", "|"],
+                            ["6\t|", "░", "▓", "░", "▓", "░", "▓", "░", "▓", "|"],
+                            ["7\t|", "▓", "░", "▓", "░", "▓", "░", "▓", "░", "|"],
+                            ["8\t|", "░", "▓", "░", "▓", "░", "▓", "░", "▓", "|"],
+                            ["                 ", "+---------------------------+",
+                             "", "", "", "", "", "", "", ""],
+                            [" \t", " A ", " B ", " C ", " D ", " E ", " F ", " G ", " H", ""]]
         # Se le da valor a las posiciones para leer las columnas
         self.positionY = {"A": 1, "B": 2, "C": 3, "D": 4, "E": 5, "F": 6, "G": 7, "H": 8}
+        self.kings = {"white": [], "black": []}
 
     def show(self):
         # Muestra los objetos en el tablero
@@ -52,8 +55,10 @@ class board():
                         self.game_board[fila][columna] = queen(
                             "black", [fila, columna], "queen")  # reina
                     if (columna == 5):
+                        self.kings["black"] = [fila, columna]
                         self.game_board[fila][columna] = king(
-                            "black", [fila, columna], "king")  # rey
+                            "black", [fila, columna], "king")  # rey.
+
                 if (fila == 2):
                     self.game_board[fila][columna] = pawn(
                         "black", [fila, columna], "pawn")  # peones
@@ -74,6 +79,7 @@ class board():
                         self.game_board[fila][columna] = queen(
                             "white", [fila, columna], "queen")  # reina
                     if (columna == 4):
+                        self.kings["white"] = [fila, columna]
                         self.game_board[fila][columna] = king(
                             "white", [fila, columna], "king")  # rey
 
@@ -107,8 +113,13 @@ class piece():
         pos2 = [int(pos2[1]), board.positionY[pos2[0]]]
         piece = board.game_board[pos1[0]][pos1[1]]
 
+        if piece == "♔" or piece == "♚":
+
+            board.kings[piece.team] = pos1
+
         if pos2_name in array:
 
+            board.game_board[pos2[0]][pos2[1]] = board.empty_board[pos2[0]][pos2[1]]
             board.game_board[pos1[0]][pos1[1]] = board.empty_board[pos1[0]][pos1[1]]
             self.pos = self.positionY[pos2[1]] + str(pos2[0])
             board.game_board[pos2[0]][pos2[1]] = piece
@@ -143,10 +154,10 @@ class pawn(piece):
             move_forward[0] -= 1
 
         # desplazamiento de las posiciones de las fichas
-        if pos[0] >= 1 and pos[0] >= 8:
+        if pos[1] >= 1 and pos[1] < 8:
             move_RD = [move_forward[0], move_forward[1] + 1]
 
-        if pos[0] <= 8 and pos[0] >= 1:
+        if pos[1] > 1 and pos[1] <= 8:
             move_LD = [move_forward[0], move_forward[1] - 1]
 
         if isinstance(board.game_board[move_forward[0]][move_forward[1]], piece) is False:
@@ -222,6 +233,7 @@ class knight(piece):
             if pos[0] + i[0] < 1 or pos[0] + i[0] > 8:
                 continue
             if (isinstance(board.game_board[pos[0] + i[0]][pos[1] + i[1]], piece)) is False:
+                if ():
                 new_pos.append(str(self.positionY[pos[1] + i[1]]) + str(pos[0] + i[0]))
             elif board.game_board[pos[0] + i[0]][pos[1] + i[1]].team != self.team:
                 new_pos.append(str(self.positionY[pos[1] + i[1]]) + str(pos[0] + i[0]))
@@ -231,7 +243,7 @@ class knight(piece):
                 continue
             if pos[0] + i[0] < 1 or pos[0] + i[0] > 8:
                 continue
-            print (pos[1] + i[1], pos[0] + i[0])
+            print(pos[1] + i[1], pos[0] + i[0])
             if (isinstance(board.game_board[pos[0] + i[0]][pos[1] + i[1]], piece)) is False:
                 new_pos.append(str(self.positionY[pos[1] + i[1]]) + str(pos[0] + i[0]))
             elif board.game_board[pos[0] + i[0]][pos[1] + i[1]].team != self.team:
@@ -272,7 +284,7 @@ class bishoop(piece):
             else:
                 can_beR = False
 
-            if move_LD[0] > 0 and move_RD[1] > 0 and can_beL is True:
+            if move_LD[0] > 0 and move_LD[1] > 0 and can_beL is True:
 
                 if isinstance(board.game_board[move_LD[0]][move_LD[1]], piece) is False:
 
@@ -395,7 +407,7 @@ class rook(piece):
                 self.arraym.append(str(self.positionY[pos[1]]) + str(i))
 
         # Movimiento Vertical hacia abajo
-        for i in range(pos[0] + 1, len(board.game_board) - 2):
+        for i in range(pos[0] + 1, len(board.game_board)):
             pos_abajo = board.game_board[i][pos[1]]
             j = 0
             objecto = False
@@ -481,11 +493,11 @@ class queen(piece):
         pos = [int(self.pos[1]), board.positionY[self.pos[0]]]
         torre = rook(self.team, [pos[1], pos[0]], "rook")
         alfil = bishoop(self.team, [pos[0], pos[1]], "bishoop")
-        self.arraym = torre.possible_move() + alfil.possible_move()
+        self.arraym = torre.possible_move() + alfil.possible_move(board)
         return self.arraym
 
 
-class king(piece):  # PROGRESS
+class king(piece):
 
     def possible_move(self):
 
@@ -494,15 +506,28 @@ class king(piece):  # PROGRESS
         container = [[1, 0], [-1, 0], [0, 1], [0, -1], [1, 1], [-1, -1], [1, -1], [-1, 1]]
 
         for entry in container:
+            move = True
             new_pos = [pos[0] + entry[0], pos[1] + entry[1]]
 
             if new_pos[0] > 0 and new_pos[0] < 9 and new_pos[1] > 0 and new_pos[1] < 9:
 
-                if isinstance(board.game_board[new_pos[0]][new_pos[1]], piece) is False:
-                    array.append(self.positionY[new_pos[1]] + str(new_pos[0]))
+                for x in board.game_board:
 
-                elif board.game_board[new_pos[0]][new_pos[1]].team != self.team:
-                    array.append(self.positionY[new_pos[1]] + str(new_pos[0]))
+                    for y in x:
+
+                        if isinstance(board.game_board[x][y], piece) is True and board.game_board.team != self.team:
+
+                            if new_pos in board.game_board[x][y].possible_move:
+
+                                move = False
+
+                    if move is True:
+
+                        if isinstance(board.game_board[new_pos[0]][new_pos[1]], piece) is False:
+                            array.append(self.positionY[new_pos[1]] + str(new_pos[0]))
+
+                        elif board.game_board[new_pos[0]][new_pos[1]].team != self.team:
+                            array.append(self.positionY[new_pos[1]] + str(new_pos[0]))
 
         return array
 
@@ -515,8 +540,3 @@ class king(piece):  # PROGRESS
             simbol = "♚"
 
         return simbol
-
-
-board.show()
-torre = rook("white", [1,8], "rook")
-print (torre.possible_move())
