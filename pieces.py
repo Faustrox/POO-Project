@@ -515,7 +515,7 @@ class queen(piece):
         pos = [int(self.pos[1]), board.positionY[self.pos[0]]]
         torre = rook(self.team, [pos[1], pos[0]], "rook")
         alfil = bishoop(self.team, [pos[0], pos[1]], "bishoop")
-        self.arraym = torre.possible_move() + alfil.possible_move(board)
+        self.arraym = torre.possible_move() + alfil.possible_move()
         return self.arraym
 
 
@@ -578,4 +578,8 @@ print (caballo.possible_move())
 
 >>>>>>> game_loop
 =======
+<<<<<<< HEAD
 >>>>>>> game_loop
+=======
+>>>>>>> arreglos
+>>>>>>> a6a916b11963a03027594f34c2d3022c4a08d0a6
