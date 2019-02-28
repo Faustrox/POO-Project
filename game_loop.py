@@ -5,7 +5,38 @@ turn = 0
 team = ["white", "black"]
 minus = ["a", "b", "c", "d", "e", "f", "g", "h"]
 
+
+def check(team):
+
+    first = False
+    second = False
+    third = False
     
+    ally_pieces = menu.pieces.board.ally_pieces(team)
+    for piece in ally_pieces:
+
+        if isinstance(piece, menu.pieces.king) is True:
+
+            allay_king = piece
+
+
+    for enemy_piece in menu.pieces.enemy_pieces(team):
+
+        if allay_king.pos in enemy_piece.possibe_move:
+
+            first = True
+
+            for ally_piece in ally_pieces:
+
+                if enemy_piece.pos in ally_piece.possible_move:
+
+                    third = True
+        
+        if len(allay_king.possible_move) > 0:
+
+            second = True
+
+
 def is_it_possible(pos):
 
     for Fstring in menu.pieces.board.positionY:

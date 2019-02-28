@@ -86,7 +86,32 @@ class board():
                 if (fila == 7):
                     self.game_board[fila][columna] = pawn(
                         "white", [fila, columna], "pawn")  # peones
+    
+    def ally_pieces(self, team):
 
+        array = []
+
+        for x in self.game_board:
+            for y in x:
+
+                if isinstance(self.game_board[x][y], piece) is True and self.game_board[x][y].team == team:
+
+                    array.append(self.game_board[x][y])
+
+        return array
+
+    def enemy_pieces(self, team):
+
+        array = []
+
+        for x in self.game_board:
+            for y in x:
+
+                if isinstance(self.game_board[x][y], piece) is True and self.game_board[x][y].team != team:
+
+                    array.append(self.game_board[x][y])
+
+        return array
 
 board = board()
 # END OF THE BOARD

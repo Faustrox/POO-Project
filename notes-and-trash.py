@@ -142,7 +142,8 @@ import pieces
 # print(pos1)
 
 
-torre1 = pieces.rook("white", [1, 8], "torre")
-pieces.board.game_board[8][1] = torre1
+rook1 = pieces.rook("white", [4, 4], "torre")
+pieces.board.game_board[4][4] = rook1
+pieces.board.show()
 
-print(pieces.board.game_board.possible_move())
+print(pieces.board.game_board[4][4].possible_move())
