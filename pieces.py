@@ -384,7 +384,6 @@ class rook(piece):
     def possible_move(self):
         pos = [board.positionY[self.pos[0]], int(self.pos[1])]
         pieces_name = [pawn, knight, bishoop, rook, queen, king]
-
         # Movimiento Vertical
         # Movimiento Vertical Hacia arriba
         for i in range(pos[0] - 1, 0, -1):
@@ -395,10 +394,10 @@ class rook(piece):
                 if isinstance(pos_arriba, pieces_name[j]) is True:
                     objecto = True
                     if self.team == "white":  # si el objeto es de diferente team se agrega su pos
-                        if pos_arriba == 'black':  # de lo contrario no se agrega y se retornan la posiciones
+                        if pos_arriba.team == 'black':  # de lo contrario no se agrega y se retornan la posiciones
                             self.arraym.append(str(self.positionY[pos[1]]) + str(i))
                     if self.team == "black":
-                        if pos_arriba == 'white':
+                        if pos_arriba.team == 'white':
                             self.arraym.append(str(self.positionY[pos[1]]) + str(i))
                 j += 1
             if objecto is True:
@@ -415,10 +414,10 @@ class rook(piece):
                 if isinstance(pos_abajo, pieces_name[j]) is True:
                     objecto = True
                     if self.team == "white":  # si el objeto es de diferente team se agrega su pos
-                        if pos_abajo == 'black':  # de lo contrario no se agrega y se retornan la posiciones
+                        if pos_abajo.team == 'black':  # de lo contrario no se agrega y se retornan la posiciones
                             self.arraym.append(str(self.positionY[pos[1]]) + str(i))
                     if self.team == "black":
-                        if pos_abajo == 'white':
+                        if pos_abajo.team == 'white':
                             self.arraym.append(str(self.positionY[pos[1]]) + str(i))
                 j += 1
             if objecto is True:
@@ -438,10 +437,10 @@ class rook(piece):
                 if isinstance(pieces_right, pieces_name[j]) is True:
                     objecto = True
                     if self.team == "white":  # si el objeto es de diferente team se agrega su pos
-                        if pieces_right == 'black':  # de lo contrario no se agrega y se retornan la posiciones
+                        if pieces_right.team == 'black':  # de lo contrario no se agrega y se retornan la posiciones
                             self.arraym.append(str(self.positionY[i]) + str(pos[0]))
                     if self.team == "black":
-                        if pieces_right == 'white':
+                        if pieces_right.team == 'white':
                             self.arraym.append(str(self.positionY[i]) + str(pos[0]))
                 j += 1
             if objecto is True:
@@ -460,10 +459,10 @@ class rook(piece):
                 if isinstance(pieces_left, pieces_name[j]) is True:
                     objecto = True
                     if self.team == "white":  # si el objeto es de diferente team se agrega su pos
-                        if pieces_left == 'black':  # de lo contrario no se agrega y se retornan la posiciones
+                        if pieces_left.team == 'black':  # de lo contrario no se agrega y se retornan la posiciones
                             self.arraym.append(str(self.positionY[i]) + str(pos[0]))
                     if self.team == "black":
-                        if pieces_left == 'white':
+                        if pieces_left.team == 'white':
                             self.arraym.append(str(self.positionY[i]) + str(pos[0]))
                 j += 1
             if objecto is True:
@@ -516,9 +515,15 @@ class king(piece):
                     for y in x:
 
                         if isinstance(board.game_board[x][y], piece) is True and board.game_board.team != self.team:
+<<<<<<< HEAD
 
                             if new_pos in board.game_board[x][y].possible_move:
 
+=======
+
+                            if new_pos in board.game_board[x][y].possible_move:
+
+>>>>>>> arreglos
                                 move = False
 
                     if move is True:
