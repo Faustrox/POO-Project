@@ -518,7 +518,7 @@ class queen(piece):
         pos = [int(self.pos[1]), board.positionY[self.pos[0]]]
         print (pos[0], pos[1])
         torre = rook(self.team, [pos[0], pos[1]], "rook")
-        alfil = bishoop(self.team, [pos[0], pos[1]], "bishoop")
+        alfil = bishoop(self.team, [pos[1], pos[0]], "bishoop")
         self.arraym = torre.possible_move() + alfil.possible_move()
         return self.arraym
 
@@ -565,3 +565,8 @@ class king(piece):
             simbol = "♚"
 
         return simbol
+
+board.fill()
+board.show()
+rey = queen("white", [1,3],"reina")
+print (rey.possible_move())
