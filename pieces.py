@@ -540,7 +540,11 @@ class king(piece):
 
         return simbol
 
-board.fill()
 board.show()
-rey = queen("white", [1,3],"reina")
-print (rey.possible_move())
+board.fill()
+def jaque(color):
+
+    for y in board.game_board:
+        print (y)
+        
+jaque("white")
