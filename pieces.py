@@ -533,7 +533,8 @@ class queen(piece):
         print (pos[0], pos[1])
         torre = rook(self.team, [pos[0], pos[1]], "rook")
         alfil = bishoop(self.team, [pos[1], pos[0]], "bishoop")
-        self.arraym = torre.possible_move() + alfil.possible_move()
+##        print(torre.possible_move())
+        print (alfil.possible_move())
         return self.arraym
 
 
@@ -586,9 +587,9 @@ class king(piece):
 
 board.fill()
 board.show()
+rey = queen("white", [1, 3], "queen")
+print (rey.possible_move())
 
-torre = rook("white", [2,3], "rook")
-print(torre.possible_move())
 
 =======
 >>>>>>> to_dic
