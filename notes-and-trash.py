@@ -141,11 +141,6 @@ import pieces
 # pos1 = [positionY[pos1[0]], int(pos1[1])]
 # print(pos1)
 
-pawn1 = pieces.pawn("white", [2, 5], "pawn")
-pieces.board.game_board[2][5] = pawn1
-pieces.board.show()
-
-print(pieces.board.game_board[2][5].possible_move())
-
-print(pawn1.move("E1"))
-pieces.board.show()
+pieces.board.fill()
+print(pieces.board.enemy_pieces("white"))
+print(pieces.board.enemy_pieces("white")[0].name)

@@ -21,16 +21,20 @@ def check(team):
             allay_king = piece
 
 
-    for enemy_piece in menu.pieces.enemy_pieces(team):
 
+
+    for enemy_piece in menu.pieces.board.enemy_pieces(team):
+        
+        if isinstance(enemy_piece, menu.pieces.king) is True:
+            continue
+        
         enemy_possible = enemy_piece.possible_move()
-
         for enemy_way in enemy_possible:
-
+            
             if allay_king.pos in enemy_possible[enemy_way]:
 
                 check = True
-
+ 
                 for allay_piece in allay_pieces:
 
                     allay_possible = allay_piece.possible_move()
@@ -46,18 +50,22 @@ def check(team):
                             if pos_move in enemy_possible[enemy_way] and allay_king.pos in enemy_possible[enemy_way]:
 
                                 third = True
-        
+  
+    
+
+
+
     if check is True and len(allay_king.possible_move()) > 0:
 
          second = True
 
     if check is True and first is False and second is False and third is False:
 
-        return "Is Chakmate, ", team, " team lose"
+        return "checkmate"
 
     elif check is True and first is True or second is True or third is True:
 
-        return "The ", team, " team is in check"
+        return "check"
 
     else:
 
@@ -84,6 +92,16 @@ while True:
 
     if turn == 2:
         turn = 0
+
+    if check(team[turn]) == "checkmate":
+
+        print("The ", team[turn], " is checkmate, you lose")
+        menu.pieces.board.show()
+        break
+    
+    elif check(team[turn]) == "check":
+
+        print("The ", team[turn], " is in check")
 
     print("It's the turn for the ", team[turn], " team")
     menu.pieces.board.show()
@@ -115,6 +133,8 @@ while True:
 
     elif isinstance(piece_select, menu.pieces.piece) is True:
         menu.cls()
+
+
 
         while True:
 

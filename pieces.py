@@ -74,10 +74,10 @@ class board():
                     if (columna == 3 or columna == 6):
                         self.game_board[fila][columna] = bishoop(
                             "white", [fila, columna], "bishoop")  # alfil
-                    if (columna == 5):
+                    if (columna == 4):
                         self.game_board[fila][columna] = queen(
                             "white", [fila, columna], "queen")  # reina
-                    if (columna == 4):
+                    if (columna == 5):
                         self.game_board[fila][columna] = king(
                             "white", [fila, columna], "king")  # rey
 
@@ -244,12 +244,11 @@ class pawn(piece):
             dic["Forward"].append(self.positionY[move_forward[1]] + str(move_forward[0]))
 
             # Verifica el primer movimiento de cada peon
-            if self.first_turn is True:
-                self.first_turn = False
-                if self.team == "black":
-                    dic["Forward"].append(self.positionY[move_forward[1]] + str(move_forward[0] + 1))
-                else:
-                    dic["Forward"].append(self.positionY[move_forward[1]] + str(move_forward[0] - 1))
+
+            if self.pos[1] == "2" and self.team == "black":
+                dic["Forward"].append(self.positionY[move_forward[1]] + str(move_forward[0] + 1))
+            elif self.pos[1] == "7" and self.team == "white":
+                dic["Forward"].append(self.positionY[move_forward[1]] + str(move_forward[0] - 1))
 
         # Verifica el movimiento diagonal para poder comer o eliminar una ficha enemiga
         if move_RD is not False:
@@ -320,7 +319,6 @@ class knight(piece):
                 continue
             if pos[0] + i[0] < 1 or pos[0] + i[0] > 8:
                 continue
-            print(pos[1] + i[1], pos[0] + i[0])
             if (isinstance(board.game_board[pos[0] + i[0]][pos[1] + i[1]], piece)) is False:
                 new_pos["left and right"].append(str(self.positionY[pos[1] + i[1]]) + str(pos[0] + i[0]))
             elif board.game_board[pos[0] + i[0]][pos[1] + i[1]].team != self.team:
@@ -444,9 +442,6 @@ class bishoop(piece):
 class rook(piece):
     # A rook (in spanish called tower), it can move straight but in diference of
     # a pawn is that the rook can move more than one step
-    def __init__(self, pos, team, name):
-        super().__init__(pos, team, name)
-
     def __str__(self):  # function para que no imprima en lenguaje maquina
 
         if self.team == "white":
@@ -459,7 +454,7 @@ class rook(piece):
 
     def possible_move(self):
         arraym = {"left" : [], "right" : [], "up" : [], "down" : []}
-        pos = [board.positionY[self.pos[0]], int(self.pos[1])]
+        pos = [int(self.pos[1]), board.positionY[self.pos[0]]]
         pieces_name = [pawn, knight, bishoop, rook, queen, king]
         # Movimiento Vertical
         # Movimiento Vertical Hacia arriba
@@ -483,7 +478,7 @@ class rook(piece):
                 arraym["up"].append(str(self.positionY[pos[1]]) + str(i))
 
         # Movimiento Vertical hacia abajo
-        for i in range(pos[0] + 1, len(board.game_board)):
+        for i in range(pos[0] + 1, len(board.game_board) - 2):
             pos_abajo = board.game_board[i][pos[1]]
             j = 0
             objecto = False
@@ -551,9 +546,6 @@ class rook(piece):
 
 class queen(piece):
 
-    def __init__(self, pos, team, name):
-        super().__init__(pos, team, name)
-
     def __str__(self):  # function para que no imprima en lenguaje maquina
 
         if self.team == "white":
@@ -568,7 +560,7 @@ class queen(piece):
         arraym = {}
         pos = [int(self.pos[1]), board.positionY[self.pos[0]]]
         torre = rook(self.team, [pos[0], pos[1]], "rook")
-        alfil = bishoop(self.team, [pos[1], pos[0]], "bishoop")
+        alfil = bishoop(self.team, [pos[0], pos[1]], "bishoop")
         for i in torre.possible_move():
             arraym[i] = torre.possible_move()[i]
         for i in alfil.possible_move():
@@ -621,10 +613,4 @@ class king(piece):
             simbol = "♚"
 
         return simbol
-<<<<<<< HEAD
-
-
-board.fill()
-board.show()
-=======
->>>>>>> to_dic
+        
