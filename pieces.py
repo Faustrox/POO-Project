@@ -29,7 +29,7 @@ class board():
                             [" \t", " A ", " B ", " C ", " D ", " E ", " F ", " G ", " H", ""]]
         # Se le da valor a las posiciones para leer las columnas
         self.positionY = {"A": 1, "B": 2, "C": 3, "D": 4, "E": 5, "F": 6, "G": 7, "H": 8}
-        self.kings = {"white": [], "black": []}
+        self.graveyard = { "white" : [], "black": []}
 
     def show(self):
         # Muestra los objetos en el tablero
@@ -55,7 +55,6 @@ class board():
                         self.game_board[fila][columna] = queen(
                             "black", [fila, columna], "queen")  # reina
                     if (columna == 5):
-                        self.kings["black"] = [fila, columna]
                         self.game_board[fila][columna] = king(
                             "black", [fila, columna], "king")  # rey.
 
@@ -79,7 +78,6 @@ class board():
                         self.game_board[fila][columna] = queen(
                             "white", [fila, columna], "queen")  # reina
                     if (columna == 4):
-                        self.kings["white"] = [fila, columna]
                         self.game_board[fila][columna] = king(
                             "white", [fila, columna], "king")  # rey
 
@@ -87,7 +85,7 @@ class board():
                     self.game_board[fila][columna] = pawn(
                         "white", [fila, columna], "pawn")  # peones
 
-    def ally_pieces(self, team):
+    def allay_pieces(self, team):
 
         array = []
 
@@ -135,9 +133,7 @@ class piece():
 
         pos1 = [int(self.pos[1]), board.positionY[self.pos[0]]]
 
-        if isinstance(board.game_board[pos1[0]][pos1[1]], king) is False:
-
-            print(board.game_board[0][1])
+        if isinstance(self, king) is False:
 
             array = []
             dic = self.possible_move()
@@ -152,31 +148,73 @@ class piece():
 
         pos2_name = pos2
         pos2 = [int(pos2[1]), board.positionY[pos2[0]]]
-        piece = board.game_board[pos1[0]][pos1[1]]
+        self_piece = board.game_board[pos1[0]][pos1[1]]
 
-        if piece == "♔" or piece == "♚":
+        if self_piece == "♔" or self_piece == "♚":
 
-            board.kings[piece.team] = pos1
+            board.kings[self_piece.team] = pos1
 
         if pos2_name in array:
+
+            if isinstance(board.game_board[pos2[0]][pos2[1]], piece) is True:
+
+                enemy = board.game_board[pos2[0]][pos2[1]]
+                board.graveyard[enemy.team].append(enemy.__str__())
 
             board.game_board[pos2[0]][pos2[1]] = board.empty_board[pos2[0]][pos2[1]]
             board.game_board[pos1[0]][pos1[1]] = board.empty_board[pos1[0]][pos1[1]]
             self.pos = self.positionY[pos2[1]] + str(pos2[0])
-            board.game_board[pos2[0]][pos2[1]] = piece
+            board.game_board[pos2[0]][pos2[1]] = self_piece
 
         elif pos2_name not in array:
 
             return "Hey, that position is imposible to do with this piece"
 
-        return True
+        if isinstance(board.game_board[pos2[0]][pos2[1]], pawn) is True:
 
+            if self.team == "white":
+
+                destination = 1
+            
+            else:
+
+                destination = 8
+
+            if int(self.pos[1]) == destination:
+                print("IS")
+
+                while True:
+
+                    print("You arrive to the enemy base!\nYou can switch to a piece that is death in the graveyard")
+                    print("Select one of this:" , board.graveyard[self.team])
+                    select_piece = int(input())
+
+                    if select_piece > len(board.graveyard[self.team]) or select_piece < len(board.graveyard[self.team]):
+
+                        print("What you select isn't correct, plz, insert a valid number for select a piece in the graveyard")
+                        continue
+
+                    else:
+
+                        select_piece = select_piece - 1
+                        board.graveyard[self.team].append(self)
+                        board.game_board[pos2[0]][pos2[1]] = board.graveyard[self.team][select_piece]
+                        break
+
+        return True
 
 class pawn(piece):
     # Hereda los atributos de equipo y posiciones
     def __init__(self, pos, team, name):
         super().__init__(pos, team, name)
         self.first_turn = True
+
+        if team is "white":
+            print("IS")
+            self.destination = 1
+
+        else:
+            self.destination = 8
 
     # Movimientos posibles
     def possible_move(self):
@@ -582,16 +620,3 @@ class king(piece):
             simbol = "♚"
 
         return simbol
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-
-board.fill()
-board.show()
-
-torre = rook("white", [2,3], "rook")
-print(torre.possible_move())
-
-=======
->>>>>>> to_dic
->>>>>>> develop

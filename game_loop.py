@@ -12,10 +12,9 @@ def check(team):
     second = False
     third = False
     check = False
-    checkmate = False
     
-    ally_pieces = menu.pieces.board.ally_pieces(team)
-    for piece in ally_pieces:
+    allay_pieces = menu.pieces.board.allay_pieces(team)
+    for piece in allay_pieces:
 
         if isinstance(piece, menu.pieces.king) is True:
 
@@ -24,32 +23,45 @@ def check(team):
 
     for enemy_piece in menu.pieces.enemy_pieces(team):
 
-        if allay_king.pos in enemy_piece.possibe_move:
+        enemy_possible = enemy_piece.possible_move()
 
-            check = True
+        for enemy_way in enemy_possible:
 
-            for ally_piece in ally_pieces:
+            if allay_king.pos in enemy_possible[enemy_way]:
 
-                if enemy_piece.pos in ally_piece.possible_move:
+                check = True
 
-                    first = True
+                for allay_piece in allay_pieces:
+
+                    allay_possible = allay_piece.possible_move()
+                    
+                    for allay_way in allay_possible:
+
+                        if enemy_piece.pos in allay_possible[allay_way]:
+
+                            first = True
+
+                        for pos_move in allay_possible[allay_way]:
+
+                            if pos_move in enemy_possible[enemy_way] and allay_king.pos in enemy_possible[enemy_way]:
+
+                                third = True
         
-        if len(allay_king.possible_move) > 0:
+    if check is True and len(allay_king.possible_move()) > 0:
 
-            second = True
-
-        if  :
-
-            third = True
+         second = True
 
     if check is True and first is False and second is False and third is False:
 
-        checkmate = True
         return "Is Chakmate, ", team, " team lose"
 
     elif check is True and first is True or second is True or third is True:
 
         return "The ", team, " team is in check"
+
+    else:
+
+        return
 
 
 def is_it_possible(pos):
