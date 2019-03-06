@@ -156,11 +156,15 @@ class piece():
 
         if pos2_name in array:
 
-            if isinstance(board.game_board[pos2[0]][pos2[1]], piece) is True:
+            if isinstance(board.game_board[pos2[0]][pos2[1]], piece) is True and board.game_board[pos2[0]][pos2[1]].team != self.team:
 
                 enemy = board.game_board[pos2[0]][pos2[1]]
                 board.graveyard[enemy.team].append(enemy.__str__())
+            
+            elif isinstance(board.game_board[pos2[0]][pos2[1]], piece) is True and board.game_board[pos2[0]][pos2[1]].team == self.team:
 
+                return "Hey, you can't eat your own pieces"
+            
             board.game_board[pos2[0]][pos2[1]] = board.empty_board[pos2[0]][pos2[1]]
             board.game_board[pos1[0]][pos1[1]] = board.empty_board[pos1[0]][pos1[1]]
             self.pos = self.positionY[pos2[1]] + str(pos2[0])
@@ -256,16 +260,12 @@ class pawn(piece):
 
             if isinstance(board.game_board[move_RD[0]][move_RD[1]], piece) is True:
 
-                if board.game_board[move_RD[0]][move_RD[1]].team != self.team:
-
                     dic["Right"].append(self.positionY[move_RD[1]] + str(move_RD[0]))
 
         if move_LD is not False:
             # Izquierda
 
             if isinstance(board.game_board[move_LD[0]][move_LD[1]], piece) is True:
-
-                if board.game_board[move_LD[0]][move_LD[1]].team != self.team:
 
                     dic["Left"].append(self.positionY[move_LD[1]] + str(move_LD[0]))
 
@@ -311,7 +311,8 @@ class knight(piece):
                 continue
             if (isinstance(board.game_board[pos[0] + i[0]][pos[1] + i[1]], piece)) is False:
                 new_pos["up and down"].append(str(self.positionY[pos[1] + i[1]]) + str(pos[0] + i[0]))
-            elif board.game_board[pos[0] + i[0]][pos[1] + i[1]].team != self.team:
+            # Movement enemy possible
+            elif board.game_board[pos[0] + i[0]][pos[1] + i[1]].team != self.team or board.game_board[pos[0] + i[0]][pos[1] + i[1]].team ==  self.team:
                 new_pos["up and down"].append(str(self.positionY[pos[1] + i[1]]) + str(pos[0] + i[0]))
 
         for i in posX:
@@ -321,7 +322,8 @@ class knight(piece):
                 continue
             if (isinstance(board.game_board[pos[0] + i[0]][pos[1] + i[1]], piece)) is False:
                 new_pos["left and right"].append(str(self.positionY[pos[1] + i[1]]) + str(pos[0] + i[0]))
-            elif board.game_board[pos[0] + i[0]][pos[1] + i[1]].team != self.team:
+            # Movement enemy possible
+            elif board.game_board[pos[0] + i[0]][pos[1] + i[1]].team != self.team or board.game_board[pos[0] + i[0]][pos[1] + i[1]].team == self.team:
                 new_pos["left and right"].append(str(self.positionY[pos[1] + i[1]]) + str(pos[0] + i[0]))
 
         return new_pos
@@ -344,16 +346,9 @@ class bishoop(piece):
 
             if move_RD[0] > 0 and move_RD[1] < 9 and can_beR is True:
 
-                if isinstance(board.game_board[move_RD[0]][move_RD[1]], piece) is False:
+                dic["RightF"].append(self.positionY[move_RD[1]] + str(move_RD[0]))
 
-                    dic["RightF"].append(self.positionY[move_RD[1]] + str(move_RD[0]))
-
-                elif board.game_board[move_RD[0]][move_RD[1]].team != self.team:
-
-                    dic["RightF"].append(self.positionY[move_RD[1]] + str(move_RD[0]))
-                    can_beR = False
-
-                else:
+                if isinstance(board.game_board[move_RD[0]][move_RD[1]], piece) is True:
                     can_beR = False
 
             else:
@@ -361,16 +356,9 @@ class bishoop(piece):
 
             if move_LD[0] > 0 and move_LD[1] > 0 and can_beL is True:
 
-                if isinstance(board.game_board[move_LD[0]][move_LD[1]], piece) is False:
+                dic["LeftF"].append(self.positionY[move_LD[1]] + str(move_LD[0]))
 
-                    dic["LeftF"].append(self.positionY[move_LD[1]] + str(move_LD[0]))
-
-                elif board.game_board[move_LD[0]][move_LD[1]].team != self.team:
-
-                    dic["LeftF"].append(self.positionY[move_LD[1]] + str(move_LD[0]))
-                    can_beL = False
-
-                else:
+                if isinstance(board.game_board[move_LD[0]][move_LD[1]], piece) is True:
                     can_beL = False
 
             else:
@@ -390,16 +378,9 @@ class bishoop(piece):
 
             if move_RD[0] < 9 and move_RD[1] < 9 and can_beR is True:
 
-                if isinstance(board.game_board[move_RD[0]][move_RD[1]], piece) is False:
+                dic["RightB"].append(self.positionY[move_RD[1]] + str(move_RD[0]))
 
-                    dic["RightB"].append(self.positionY[move_RD[1]] + str(move_RD[0]))
-
-                elif board.game_board[move_RD[0]][move_RD[1]].team != self.team:
-
-                    dic["RightB"].append(self.positionY[move_RD[1]] + str(move_RD[0]))
-                    can_beR = False
-
-                else:
+                if isinstance(board.game_board[move_RD[0]][move_RD[1]], piece) is True:
                     can_beR = False
 
             else:
@@ -407,16 +388,9 @@ class bishoop(piece):
 
             if move_LD[0] < 9 and move_LD[1] > 0 and can_beL is True:
 
-                if isinstance(board.game_board[move_LD[0]][move_LD[1]], piece) is False:
+                dic["LeftB"].append(self.positionY[move_LD[1]] + str(move_LD[0]))
 
-                    dic["LeftB"].append(self.positionY[move_LD[1]] + str(move_LD[0]))
-
-                elif board.game_board[move_LD[0]][move_LD[1]].team != self.team:
-
-                    dic["LeftB"].append(self.positionY[move_LD[1]] + str(move_LD[0]))
-                    can_beL = False
-
-                else:
+                if isinstance(board.game_board[move_LD[0]][move_LD[1]], piece) is True:
                     can_beL = False
 
             else:
@@ -465,12 +439,8 @@ class rook(piece):
             while j < len(pieces_name):
                 if isinstance(pos_arriba, pieces_name[j]) is True:
                     objecto = True
-                    if self.team == "white":  # si el objeto es de diferente team se agrega su pos
-                        if pos_arriba.team == 'black':  # de lo contrario no se agrega y se retornan la posiciones
-                            arraym["up"].append(str(self.positionY[pos[1]]) + str(i))
-                    if self.team == "black":
-                        if pos_arriba.team == 'white':
-                            arraym["up"].append(str(self.positionY[pos[1]]) + str(i))
+                    arraym["up"].append(str(self.positionY[pos[1]]) + str(i))
+                   
                 j += 1
             if objecto is True:
                 break
@@ -485,12 +455,7 @@ class rook(piece):
             while j < len(pieces_name):
                 if isinstance(pos_abajo, pieces_name[j]) is True:
                     objecto = True
-                    if self.team == "white":  # si el objeto es de diferente team se agrega su pos
-                        if pos_abajo.team == 'black':  # de lo contrario no se agrega y se retornan la posiciones
-                            arraym["down"].append(str(self.positionY[pos[1]]) + str(i))
-                    if self.team == "black":
-                        if pos_abajo.team == 'white':
-                            arraym["down"].append(str(self.positionY[pos[1]]) + str(i))
+                    arraym["down"].append(str(self.positionY[pos[1]]) + str(i))
                 j += 1
             if objecto is True:
                 break
@@ -508,12 +473,7 @@ class rook(piece):
             while j < len(pieces_name):
                 if isinstance(pieces_right, pieces_name[j]) is True:
                     objecto = True
-                    if self.team == "white":  # si el objeto es de diferente team se agrega su pos
-                        if pieces_right.team == 'black':  # de lo contrario no se agrega y se retornan la posiciones
-                            arraym["right"].append(str(self.positionY[i]) + str(pos[0]))
-                    if self.team == "black":
-                        if pieces_right.team == 'white':
-                            arraym["right"].append(str(self.positionY[i]) + str(pos[0]))
+                    arraym["right"].append(str(self.positionY[i]) + str(pos[0]))
                 j += 1
             if objecto is True:
                 break
@@ -529,13 +489,8 @@ class rook(piece):
             objecto = False
             while j < len(pieces_name):
                 if isinstance(pieces_left, pieces_name[j]) is True:
-                    objecto = True
-                    if self.team == "white":  # si el objeto es de diferente team se agrega su pos
-                        if pieces_left.team == 'black':  # de lo contrario no se agrega y se retornan la posiciones
-                            arraym["left"].append(str(self.positionY[i]) + str(pos[0]))
-                    if self.team == "black":
-                        if pieces_left.team == 'white':
-                            arraym["left"].append(str(self.positionY[i]) + str(pos[0]))
+                    objecto = True                 
+                    arraym["left"].append(str(self.positionY[i]) + str(pos[0]))
                 j += 1
             if objecto is True:
                 break
@@ -582,25 +537,26 @@ class king(piece):
 
             if new_pos[0] > 0 and new_pos[0] < 9 and new_pos[1] > 0 and new_pos[1] < 9:
 
-                for enemy_piece in board.enemy_pieces(self.team):
+                if isinstance(board.game_board[new_pos[0]][new_pos[1]], piece) is False:
+                    array.append(self.positionY[new_pos[1]] + str(new_pos[0]))
 
-                    new_pos_str = self.positionY[new_pos[1]] + str(new_pos[0])
-                    enemy_possible = enemy_piece.possible_move()
+                else:
+                    array.append(self.positionY[new_pos[1]] + str(new_pos[0]))
 
-                    for way in enemy_possible:
+        for enemy in board.enemy_pieces(self.team):
 
-                        if new_pos_str in enemy_possible[way]:
+            if type(enemy) == king:
 
-                            move = False
-                            break
+                continue
 
-                if move is True:
+            for way in enemy.possible_move():
 
-                    if isinstance(board.game_board[new_pos[0]][new_pos[1]], piece) is False:
-                        array.append(self.positionY[new_pos[1]] + str(new_pos[0]))
+                for move in enemy.possible_move()[way]:
+                    print(move)
 
-                    elif board.game_board[new_pos[0]][new_pos[1]].team != self.team:
-                        array.append(self.positionY[new_pos[1]] + str(new_pos[0]))
+                    if move in array:
+
+                        array.remove(move)
 
         return array
 

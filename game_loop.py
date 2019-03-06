@@ -19,9 +19,7 @@ def check(team):
         if isinstance(piece, menu.pieces.king) is True:
 
             allay_king = piece
-
-
-
+            break
 
     for enemy_piece in menu.pieces.board.enemy_pieces(team):
         
@@ -33,9 +31,14 @@ def check(team):
             
             if allay_king.pos in enemy_possible[enemy_way]:
 
+                print(enemy_piece)
+
                 check = True
  
                 for allay_piece in allay_pieces:
+
+                    if type(allay_piece) == menu.pieces.king:
+                        continue
 
                     allay_possible = allay_piece.possible_move()
                     
@@ -45,19 +48,35 @@ def check(team):
 
                             first = True
 
-                        for pos_move in allay_possible[allay_way]:
+                        for array_move in allay_possible[allay_way]:
 
-                            if pos_move in enemy_possible[enemy_way] and allay_king.pos in enemy_possible[enemy_way]:
+                            for allay_move in array_move:
 
-                                third = True
-  
-    
+                                if allay_move in enemy_possible[enemy_way] and allay_king.pos in enemy_possible[enemy_way]:
 
+                                    third = True
+                                    break
 
+    if check is True:
 
-    if check is True and len(allay_king.possible_move()) > 0:
+        can = False
 
-         second = True
+        for pos in allay_king.possible_move():
+
+            pos = [int(pos[1]), menu.pieces.board.positionY[pos[0]]]
+
+            if isinstance(menu.pieces.board.game_board[pos[0]][pos[1]], menu.pieces.piece) is False:
+                print("HEY")
+                can = True
+                break
+
+            elif type(menu.pieces.board.game_board[pos[0]][pos[1]]) == piece and menu.pieces.board.game_board[pos[0]][pos[1]].team != team:
+                can = True
+                break
+
+        if can is True:
+
+            second = True
 
     if check is True and first is False and second is False and third is False:
 
@@ -65,6 +84,7 @@ def check(team):
 
     elif check is True and first is True or second is True or third is True:
 
+        print(first, second, third)
         return "check"
 
     else:
@@ -95,6 +115,7 @@ while True:
 
     if check(team[turn]) == "checkmate":
 
+        menu.cls()
         print("The ", team[turn], " is checkmate, you lose")
         menu.pieces.board.show()
         break
@@ -138,6 +159,9 @@ while True:
 
         while True:
 
+            if check(team[turn]) == "check":
+
+                print("The ", team[turn], " is in check")
 
             print("It's the turn for the ", team[turn], " team")
             menu.pieces.board.show()

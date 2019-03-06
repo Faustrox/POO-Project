@@ -141,6 +141,5 @@ import pieces
 # pos1 = [positionY[pos1[0]], int(pos1[1])]
 # print(pos1)
 
-pieces.board.fill()
-print(pieces.board.enemy_pieces("white"))
-print(pieces.board.enemy_pieces("white")[0].name)
+array = [0,1,2,3]
+print(array.find(1))
