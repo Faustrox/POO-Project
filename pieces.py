@@ -253,7 +253,7 @@ class pawn(piece):
         return simbol
     #     # A pawn move one step by one but in the exit it can do two step in one move.
 
-    def switch(self):
+    def switch(self): # Funcion del peon para cambiar de pieza si llega a la base enemiga
 
         if self.team == "white":
 
@@ -337,9 +337,9 @@ class knight(piece):
 
 class bishoop(piece):
     # Alfil
-    def possible_move(self):
+    def possible_move(self): # Funcion para hacer los posibles movimientos del alfil
 
-        dic = {"RightF": [], "LeftF": [], "RightB": [], "LeftB": []}
+        dic = {"RightF": [], "LeftF": [], "RightB": [], "LeftB": []} # Diccionario que tendra todas las trayectorias del alfil
 
         pos = [int(self.pos[1]), board.positionY[self.pos[0]]]
         move_LD, move_RD = pos, pos
@@ -354,9 +354,9 @@ class bishoop(piece):
 
                 dic["RightF"].append(self.positionY[move_RD[1]] + str(move_RD[0]))
 
-                if isinstance(board.game_board[move_RD[0]][move_RD[1]], king) is True:
+                if isinstance(board.game_board[move_RD[0]][move_RD[1]], king) is True: # Condicion para saber si el movimiento al donde va es un Rey.
                     move_RD2 = [move_RD[0] - 1, move_RD[1] + 1]
-
+                    # Si es un rey entonces en el diccionario se añadira un paso mas despues del rey
                     if move_RD2[0] > 0 and move_RD2[1] < 9:
                         self.pos_after_king = self.positionY[move_RD2[1]] + str(move_RD2[0])
 
@@ -370,9 +370,9 @@ class bishoop(piece):
 
                 dic["LeftF"].append(self.positionY[move_LD[1]] + str(move_LD[0]))
 
-                if isinstance(board.game_board[move_LD[0]][move_LD[1]], king) is True:
+                if isinstance(board.game_board[move_LD[0]][move_LD[1]], king) is True: # Condicion para saber si el movimiento al donde va es un Rey.
                     move_LD2 = [move_LD[0] - 1, move_LD[1] - 1]
-
+                    # Si es un rey entonces en el diccionario se añadira un paso mas despues del rey
                     if move_LD2[0] > 0 and move_LD2[1] > 0:
                         self.pos_after_king = self.positionY[move_LD2[1]] + str(move_LD2[0])
 
@@ -555,7 +555,7 @@ class queen(piece):
 
         return simbol
 
-    def possible_move(self):
+    def possible_move(self): # Funcion que imprime los movimientos posibles, mezcla los movimientos de la torre y del alfil y los junta en un diccionario
         arraym = {}
         pos = [int(self.pos[1]), board.positionY[self.pos[0]]]
         torre = rook(self.team, [pos[0], pos[1]], "rook")
@@ -569,11 +569,11 @@ class queen(piece):
 
 class king(piece):
     # Rey
-    def possible_move(self):
+    def possible_move(self): # Funcion que imprime los movimientos posibles
 
         array = []
         pos = [int(self.pos[1]), board.positionY[self.pos[0]]]
-        container = [[1, 0], [-1, 0], [0, 1], [0, -1], [1, 1], [-1, -1], [1, -1], [-1, 1]]
+        container = [[1, 0], [-1, 0], [0, 1], [0, -1], [1, 1], [-1, -1], [1, -1], [-1, 1]] # Los pasos que puede hacer el rey en una matriz
 
         for entry in container:
             move = True
@@ -587,7 +587,8 @@ class king(piece):
                 else:
                     array.append(self.positionY[new_pos[1]] + str(new_pos[0]))
 
-        for enemy in board.enemy_pieces(self.team):
+        for enemy in board.enemy_pieces(self.team):  # Estos bucles estan aqui para hacer la condicion de si el movimiento al donde puede ir el rey lo esta...
+            # ...apuntando, entonces que se borre ya que seria un movimiento invalido
 
             if enemy.pos_after_king != False:
 
