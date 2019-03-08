@@ -31,8 +31,6 @@ def check(team):
             
             if allay_king.pos in enemy_possible[enemy_way]:
 
-                print(enemy_piece)
-
                 check = True
  
                 for allay_piece in allay_pieces:
@@ -66,11 +64,10 @@ def check(team):
             pos = [int(pos[1]), menu.pieces.board.positionY[pos[0]]]
 
             if isinstance(menu.pieces.board.game_board[pos[0]][pos[1]], menu.pieces.piece) is False:
-                print("HEY")
                 can = True
                 break
 
-            elif type(menu.pieces.board.game_board[pos[0]][pos[1]]) == piece and menu.pieces.board.game_board[pos[0]][pos[1]].team != team:
+            elif isinstance(menu.pieces.board.game_board[pos[0]][pos[1]], piece) is True and menu.pieces.board.game_board[pos[0]][pos[1]].team != team:
                 can = True
                 break
 
@@ -165,8 +162,12 @@ while True:
 
             print("It's the turn for the ", team[turn], " team")
             menu.pieces.board.show()
+            if isinstance(piece_select, menu.pieces.pawn) is True and piece_select.switch() != False:
+                piece_select.switch()
+
             print("You select a ", piece_select.name, " in the positon ", position_name)
             print("Digit the position where you want to move it: (If you put 0 you can return to select another piece)")
+            print(piece_select.possible_move())
             move_to = input()
             move_to = str(move_to)
 

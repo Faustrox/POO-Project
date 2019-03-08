@@ -141,5 +141,18 @@ import pieces
 # pos1 = [positionY[pos1[0]], int(pos1[1])]
 # print(pos1)
 
-array = [0,1,2,3]
-print(array.find(1))
+queen1 = pieces.queen("white", [1, 8], "queen")
+king1 = pieces.king("black",[1,4], "king")
+pawn1 = pieces.pawn("black",[2,3], "pawn")
+pawn2 = pieces.pawn("black",[2,4], "pawn")
+pawn3 = pieces.pawn("black",[2,5], "pawn")
+
+pieces.board.game_board[1][4] = king1
+pieces.board.game_board[1][8] = queen1
+pieces.board.game_board[2][3] = pawn1
+pieces.board.game_board[2][4] = pawn2
+pieces.board.game_board[2][5] = pawn3
+
+pieces.board.show()
+
+print(pieces.board.game_board[1][4].possible_move())

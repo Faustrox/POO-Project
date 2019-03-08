@@ -1,5 +1,5 @@
 class board():
-
+    # Clase principal para el tablero
     def __init__(self):
         # Diseno del tablero donde iran las piezas
         self.game_board = [["                 ", "+---------------------------+", "", "", "", "", "", "", "", ""],
@@ -29,7 +29,8 @@ class board():
                             [" \t", " A ", " B ", " C ", " D ", " E ", " F ", " G ", " H", ""]]
         # Se le da valor a las posiciones para leer las columnas
         self.positionY = {"A": 1, "B": 2, "C": 3, "D": 4, "E": 5, "F": 6, "G": 7, "H": 8}
-        self.graveyard = { "white" : [], "black": []}
+        self.real_graveyard = {"white": [], "black": []}
+        self.graveyard = {"white": [], "black": []}
 
     def show(self):
         # Muestra los objetos en el tablero
@@ -38,7 +39,7 @@ class board():
                   entry[4], entry[5], entry[6], entry[7], entry[8], entry[9])
 
     def fill(self):  # entra las piezas(objetos) al tablero.
-
+        # Para las piezas negras
         for fila in range(1, 3):
             for columna in range(1, 9):
                 if (fila == 1):
@@ -61,7 +62,7 @@ class board():
                 if (fila == 2):
                     self.game_board[fila][columna] = pawn(
                         "black", [fila, columna], "pawn")  # peones
-
+        # Para las piezas blancas
         for fila in range(7, 9):
             for columna in range(1, 9):
                 if (fila == 8):
@@ -86,7 +87,7 @@ class board():
                         "white", [fila, columna], "pawn")  # peones
 
     def allay_pieces(self, team):
-
+        # Verifica si una pieza es aliada o no
         array = []
 
         for x in range(1, 9):
@@ -99,7 +100,7 @@ class board():
         return array
 
     def enemy_pieces(self, team):
-
+        # Verifica si una pieza es enemiga
         array = []
 
         for x in range(1, 9):
@@ -119,25 +120,24 @@ board = board()
 
 
 class piece():
-
+    # Clase principal de las piezas
     def __init__(self, team, pos, name):
         self.positionX = {1: "1", 2: "2", 3: "3", 4: "4", 5: "5", 6: "6", 7: "7", 8: "8"}
         self.positionY = {1: "A", 2: "B", 3: "C", 4: "D", 5: "E", 6: "F", 7: "G", 8: "H"}
         self.name = name
         self.pos = self.positionY[pos[1]] + str(pos[0])
         self.team = team
-
-    # def eat(self, pos2):
+        self.pos_after_king = False
 
     def move(self, pos2):
-
+        # Define los movimientos
         pos1 = [int(self.pos[1]), board.positionY[self.pos[0]]]
 
         if isinstance(self, king) is False:
 
             array = []
             dic = self.possible_move()
- 
+
             for entry in dic:
 
                 array += dic[entry]
@@ -159,12 +159,17 @@ class piece():
             if isinstance(board.game_board[pos2[0]][pos2[1]], piece) is True and board.game_board[pos2[0]][pos2[1]].team != self.team:
 
                 enemy = board.game_board[pos2[0]][pos2[1]]
+                board.real_graveyard[enemy.team].append(enemy)
                 board.graveyard[enemy.team].append(enemy.__str__())
-            
+
             elif isinstance(board.game_board[pos2[0]][pos2[1]], piece) is True and board.game_board[pos2[0]][pos2[1]].team == self.team:
 
                 return "Hey, you can't eat your own pieces"
-            
+
+            if self.pos_after_king != False:
+
+                return "Hey, that position is imposible to do with this piece"
+
             board.game_board[pos2[0]][pos2[1]] = board.empty_board[pos2[0]][pos2[1]]
             board.game_board[pos1[0]][pos1[1]] = board.empty_board[pos1[0]][pos1[1]]
             self.pos = self.positionY[pos2[1]] + str(pos2[0])
@@ -174,38 +179,12 @@ class piece():
 
             return "Hey, that position is imposible to do with this piece"
 
-        if isinstance(board.game_board[pos2[0]][pos2[1]], pawn) is True:
+        if isinstance(self, pawn) is True:
 
-            if self.team == "white":
-
-                destination = 1
-            
-            else:
-
-                destination = 8
-
-            if int(self.pos[1]) == destination:
-                print("IS")
-
-                while True:
-
-                    print("You arrive to the enemy base!\nYou can switch to a piece that is death in the graveyard")
-                    print("Select one of this:" , board.graveyard[self.team])
-                    select_piece = int(input())
-
-                    if select_piece > len(board.graveyard[self.team]) or select_piece < len(board.graveyard[self.team]):
-
-                        print("What you select isn't correct, plz, insert a valid number for select a piece in the graveyard")
-                        continue
-
-                    else:
-
-                        select_piece = select_piece - 1
-                        board.graveyard[self.team].append(self)
-                        board.game_board[pos2[0]][pos2[1]] = board.graveyard[self.team][select_piece]
-                        break
+            self.switch()
 
         return True
+
 
 class pawn(piece):
     # Hereda los atributos de equipo y posiciones
@@ -213,16 +192,8 @@ class pawn(piece):
         super().__init__(pos, team, name)
         self.first_turn = True
 
-        if team is "white":
-            print("IS")
-            self.destination = 1
-
-        else:
-            self.destination = 8
-
-    # Movimientos posibles
     def possible_move(self):
-
+        # Movimientos posibles
         dic = {"Forward": [], "Right": [], "Left": []}
         pos = [int(self.pos[1]), board.positionY[self.pos[0]]]
         move_RD, move_LD = False, False
@@ -260,14 +231,14 @@ class pawn(piece):
 
             if isinstance(board.game_board[move_RD[0]][move_RD[1]], piece) is True:
 
-                    dic["Right"].append(self.positionY[move_RD[1]] + str(move_RD[0]))
+                dic["Right"].append(self.positionY[move_RD[1]] + str(move_RD[0]))
 
         if move_LD is not False:
             # Izquierda
 
             if isinstance(board.game_board[move_LD[0]][move_LD[1]], piece) is True:
 
-                    dic["Left"].append(self.positionY[move_LD[1]] + str(move_LD[0]))
+                dic["Left"].append(self.positionY[move_LD[1]] + str(move_LD[0]))
 
         return dic
 
@@ -281,6 +252,37 @@ class pawn(piece):
 
         return simbol
     #     # A pawn move one step by one but in the exit it can do two step in one move.
+
+    def switch(self):
+
+        if self.team == "white":
+
+            destination = 1
+
+        else:
+
+            destination = 8
+
+        if int(self.pos[1]) == destination:
+            pos = [int(self.pos[1]), board.positionY[self.pos[0]]]
+            while True:
+
+                print("You arrive to the enemy base!")
+                print("You can switch to a piece what you want")
+                print("Select one of this:", ["♞", "♝"])
+                select_piece = input("Uno o Dos\n")
+                select_piece = int(select_piece) - 1
+                print(pos)
+                knight_1 = knight(self.team, [pos[0], pos[1]], "knight")
+                bishoop_1 = bishoop(self.team, [pos[0], pos[1]], "bishoop")
+                if select_piece == 0:
+                    board.game_board[pos[0]][pos[1]] = knight_1
+                if select_piece == 1:
+                    board.game_board[pos[0]][pos[1]] = bishoop_1
+                break
+        else:
+
+            return False
 
 
 class knight(piece):
@@ -300,8 +302,8 @@ class knight(piece):
         return simbol
 
     def possible_move(self):
-        new_pos = {"left and right" : [], "up and down" : []}
-        pos = [board.positionY[self.pos[0]], int(self.pos[1])]
+        new_pos = {"left and right": [], "up and down": []}
+        pos = [int(self.pos[1]), board.positionY[self.pos[0]]]
         posY = [[2, -1], [2, 1], [-2, 1], [-2, -1]]  # posiciones arriba y abajo del caballo
         posX = [[-1, 2], [1, 2], [1, -2], [-1, -2]]    # posiciones laterales
         for i in posY:
@@ -310,10 +312,12 @@ class knight(piece):
             if pos[0] + i[0] < 1 or pos[0] + i[0] > 8:
                 continue
             if (isinstance(board.game_board[pos[0] + i[0]][pos[1] + i[1]], piece)) is False:
-                new_pos["up and down"].append(str(self.positionY[pos[1] + i[1]]) + str(pos[0] + i[0]))
+                new_pos["up and down"].append(
+                    str(self.positionY[pos[1] + i[1]]) + str(pos[0] + i[0]))
             # Movement enemy possible
-            elif board.game_board[pos[0] + i[0]][pos[1] + i[1]].team != self.team or board.game_board[pos[0] + i[0]][pos[1] + i[1]].team ==  self.team:
-                new_pos["up and down"].append(str(self.positionY[pos[1] + i[1]]) + str(pos[0] + i[0]))
+            elif board.game_board[pos[0] + i[0]][pos[1] + i[1]].team != self.team or board.game_board[pos[0] + i[0]][pos[1] + i[1]].team == self.team:
+                new_pos["up and down"].append(
+                    str(self.positionY[pos[1] + i[1]]) + str(pos[0] + i[0]))
 
         for i in posX:
             if pos[1] + i[1] < 1 or pos[1] + i[1] > 8:
@@ -321,16 +325,18 @@ class knight(piece):
             if pos[0] + i[0] < 1 or pos[0] + i[0] > 8:
                 continue
             if (isinstance(board.game_board[pos[0] + i[0]][pos[1] + i[1]], piece)) is False:
-                new_pos["left and right"].append(str(self.positionY[pos[1] + i[1]]) + str(pos[0] + i[0]))
+                new_pos["left and right"].append(
+                    str(self.positionY[pos[1] + i[1]]) + str(pos[0] + i[0]))
             # Movement enemy possible
             elif board.game_board[pos[0] + i[0]][pos[1] + i[1]].team != self.team or board.game_board[pos[0] + i[0]][pos[1] + i[1]].team == self.team:
-                new_pos["left and right"].append(str(self.positionY[pos[1] + i[1]]) + str(pos[0] + i[0]))
+                new_pos["left and right"].append(
+                    str(self.positionY[pos[1] + i[1]]) + str(pos[0] + i[0]))
 
         return new_pos
 
 
 class bishoop(piece):
-
+    # Alfil
     def possible_move(self):
 
         dic = {"RightF": [], "LeftF": [], "RightB": [], "LeftB": []}
@@ -348,6 +354,12 @@ class bishoop(piece):
 
                 dic["RightF"].append(self.positionY[move_RD[1]] + str(move_RD[0]))
 
+                if isinstance(board.game_board[move_RD[0]][move_RD[1]], king) is True:
+                    move_RD2 = [move_RD[0] - 1, move_RD[1] + 1]
+
+                    if move_RD2[0] > 0 and move_RD2[1] < 9:
+                        self.pos_after_king = self.positionY[move_RD2[1]] + str(move_RD2[0])
+
                 if isinstance(board.game_board[move_RD[0]][move_RD[1]], piece) is True:
                     can_beR = False
 
@@ -357,6 +369,12 @@ class bishoop(piece):
             if move_LD[0] > 0 and move_LD[1] > 0 and can_beL is True:
 
                 dic["LeftF"].append(self.positionY[move_LD[1]] + str(move_LD[0]))
+
+                if isinstance(board.game_board[move_LD[0]][move_LD[1]], king) is True:
+                    move_LD2 = [move_LD[0] - 1, move_LD[1] - 1]
+
+                    if move_LD2[0] > 0 and move_LD2[1] > 0:
+                        self.pos_after_king = self.positionY[move_LD2[1]] + str(move_LD2[0])
 
                 if isinstance(board.game_board[move_LD[0]][move_LD[1]], piece) is True:
                     can_beL = False
@@ -380,6 +398,11 @@ class bishoop(piece):
 
                 dic["RightB"].append(self.positionY[move_RD[1]] + str(move_RD[0]))
 
+                if isinstance(board.game_board[move_LD[0]][move_LD[1]], king) is True:
+                    move_RD2 = [move_RD[0] + 1, move_RD[1] + 1]
+                    if move_RD2[0] < 9 and move_RD2[1] < 9:
+                        self.pos_after_king = self.positionY[move_RD2[1]] + str(move_RD2[0])
+
                 if isinstance(board.game_board[move_RD[0]][move_RD[1]], piece) is True:
                     can_beR = False
 
@@ -389,6 +412,11 @@ class bishoop(piece):
             if move_LD[0] < 9 and move_LD[1] > 0 and can_beL is True:
 
                 dic["LeftB"].append(self.positionY[move_LD[1]] + str(move_LD[0]))
+
+                if isinstance(board.game_board[move_LD[0]][move_LD[1]], king) is True:
+                    move_LD2 = [move_LD[0] + 1, move_LD[1] - 1]
+                    if move_LD[0] < 9 and move_LD[1] > 0:
+                        self.pos_after_king = self.positionY[move_LD2[1]] + str(move_LD2[0])
 
                 if isinstance(board.game_board[move_LD[0]][move_LD[1]], piece) is True:
                     can_beL = False
@@ -427,11 +455,12 @@ class rook(piece):
         return simbol
 
     def possible_move(self):
-        arraym = {"left" : [], "right" : [], "up" : [], "down" : []}
+        arraym = {"left": [], "right": [], "up": [], "down": []}
         pos = [int(self.pos[1]), board.positionY[self.pos[0]]]
         pieces_name = [pawn, knight, bishoop, rook, queen, king]
         # Movimiento Vertical
         # Movimiento Vertical Hacia arriba
+
         for i in range(pos[0] - 1, 0, -1):
             pos_arriba = board.game_board[i][pos[1]]
             j = 0
@@ -439,8 +468,12 @@ class rook(piece):
             while j < len(pieces_name):
                 if isinstance(pos_arriba, pieces_name[j]) is True:
                     objecto = True
+                    if pos_arriba.name == "king" and pos_arriba.team != self.team:
+                        if pos[1] < 9 and i - 1 > 0:
+                            arraym["up"].append(str(self.positionY[pos[1]]) + str(i - 1))
+
                     arraym["up"].append(str(self.positionY[pos[1]]) + str(i))
-                   
+
                 j += 1
             if objecto is True:
                 break
@@ -455,12 +488,16 @@ class rook(piece):
             while j < len(pieces_name):
                 if isinstance(pos_abajo, pieces_name[j]) is True:
                     objecto = True
+                    if pos_abajo.name == "king" and pos_abajo.team != self.team:
+                        print(pos[1], i + 1, i)
+                        if pos[1] < 9 and i + 1 < 9 and i > 0:
+                            arraym["down"].append(str(self.positionY[pos[1]]) + str(i + 1))
                     arraym["down"].append(str(self.positionY[pos[1]]) + str(i))
                 j += 1
             if objecto is True:
                 break
             else:
-               arraym["down"].append(str(self.positionY[pos[1]]) + str(i))
+                arraym["down"].append(str(self.positionY[pos[1]]) + str(i))
 
         # Movimiento Horizontal
         # movimientos horizontal a la derecha
@@ -473,6 +510,10 @@ class rook(piece):
             while j < len(pieces_name):
                 if isinstance(pieces_right, pieces_name[j]) is True:
                     objecto = True
+                    if pieces_right.name == "king" and pieces_right.team != self.team:
+                        if i + 1 < 9 and pos[0] > 0:
+                            arraym["right"].append(str(self.positionY[i + 1]) + str(pos[0]))
+
                     arraym["right"].append(str(self.positionY[i]) + str(pos[0]))
                 j += 1
             if objecto is True:
@@ -489,7 +530,10 @@ class rook(piece):
             objecto = False
             while j < len(pieces_name):
                 if isinstance(pieces_left, pieces_name[j]) is True:
-                    objecto = True                 
+                    objecto = True
+                    if pieces_left.name == "king" and pieces_left.team != self.team:
+                        if i - 1 < 9 and i - 1 > 0 and pos[0] > 0 and pos[0] < 9:
+                            arraym["left"].append(str(self.positionY[i - 1]) + str(pos[0]))
                     arraym["left"].append(str(self.positionY[i]) + str(pos[0]))
                 j += 1
             if objecto is True:
@@ -500,7 +544,7 @@ class rook(piece):
 
 
 class queen(piece):
-
+    # Reina
     def __str__(self):  # function para que no imprima en lenguaje maquina
 
         if self.team == "white":
@@ -524,7 +568,7 @@ class queen(piece):
 
 
 class king(piece):
-
+    # Rey
     def possible_move(self):
 
         array = []
@@ -545,6 +589,12 @@ class king(piece):
 
         for enemy in board.enemy_pieces(self.team):
 
+            if enemy.pos_after_king != False:
+
+                if enemy.pos_after_king in array:
+
+                    array.remove(enemy.pos_after_king)
+
             if type(enemy) == king:
 
                 continue
@@ -552,7 +602,6 @@ class king(piece):
             for way in enemy.possible_move():
 
                 for move in enemy.possible_move()[way]:
-                    print(move)
 
                     if move in array:
 
@@ -569,4 +618,3 @@ class king(piece):
             simbol = "♚"
 
         return simbol
-        
