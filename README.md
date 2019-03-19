@@ -1,3 +1,8 @@
+# Acerca del Proyecto
+
+Es un proyecto acerca de ajedrez en el cual se desarrollo la logica de las piezas, tablero, jaque y jaquemate, el programa fue realizado usando python en su version 3.7 en conjunto con Git ya que este fue en cooperacion.
+
+
 # POO-Project
 
 Para que el juego funcione correctamente, por favor arrancar el archivo game_loop.py con un Shell, si usa CMD tendra problemas como el de
@@ -19,3 +24,4 @@ run the program it going to appear a menu that will have 3 options, 1. Start gam
 Exit Game. For start to play you just have to insert 1 and press enter, soon it will be creat a board full of pieces, the white pieces are
 in the downside and in the upside are the black ones, for select a piece you need to insert the position of the piece, for example: A2.
 Later on it will ask the position of where you want to move the piece.
+
