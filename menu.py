@@ -1,13 +1,12 @@
-import pieces # importa todo el codigo del archivo pieces.py
+import board # importa todo el codigo del archivo pieces.py
 def cls(): print("\n" * 35) # para hacer una "limpieza" del terminal
 
 print("Welcome to a Chess\n")
 
-
 def menu(): # Para crear un menu, muy sencillo
 
     while True:
-        pieces.board.show()
+        board.board.show()
         print("\n1.- Start the game\n2.- How to play?(IN PROGRESS)\n3.- Exit Game")
 
         option = int(input())
@@ -15,7 +14,7 @@ def menu(): # Para crear un menu, muy sencillo
         if option == 1:
             cls()
             print("The board was created, white down, black up\n")
-            pieces.board.fill()
+            board.board.fill()
             break
 
         else:
