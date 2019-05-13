@@ -1,89 +1,92 @@
 import menu
+import board_functions
+import board
 
 piece = menu.pieces.piece
 turn = 0 # variable que se ira sunando para solo llegar a 1, esta decidira cual team le tocara o sea el turno, 0 para white, 1 para black
 team = ["white", "black"] # Esto contendra los nombres de los equipos
 minus = ["a", "b", "c", "d", "e", "f", "g", "h"] # Las posiciones en columna pero en minuscula, esta la use para alguno que ponga minusculas debes de mayusculas
 
+#Variables para verficar el check
+check_var = False
+first = False
+third = False  
+
+
+
+def allay_king_function(team, allay_pieces):# Funcion que busca al rey
+
+    for piece in allay_pieces:  # Este for ira de pieza en pieza del equipo que incertes en la funcion
+        if isinstance(piece, menu.pieces.king) is True:
+            allay_king = piece  # Si la pieza es un rey, me almacenara ese objeto en una variable
+            return allay_king
+
+
+
+def check_first_third(team, enemy_possible, allay_pieces, allay_king, enemy_piece):# Funcion que verifica a las variables first. third y check
+
+    global check_var, first, third
+    for enemy_way in enemy_possible:  # Busca las trayectorias de la pieza
+        if allay_king.pos in enemy_possible[enemy_way]:  # la condicion principal, si se cumple las otras pueden ser cumplidas, sino no
+            check_var = True    # Si la posicion del rey aliado esta en los posibles movimientos de alguna pieza enemiga entonces es jaque
+            for allay_piece in allay_pieces: # Un bucle que va de pieza en pieca enemiga
+                if type(allay_piece) == menu.pieces.king: # Si esa pieza es un rey, cedera
+                    continue
+                allay_possible = allay_piece.possible_move()
+                
+                for allay_way in allay_possible: # La trayectoria de esa pieza
+                    if enemy_piece.pos in allay_possible[allay_way]: # Si la posicion del enemigo que esta apuntando al rey esta en uno de los posibles moviemientos de un aliado entonces se cumple el first
+                        first = True
+                        
+                    for array_move in allay_possible[allay_way]:
+                        for allay_pos_mov in array_move:
+                            # Si el possible movimiento de un aliado esta en la trayectoria de un enemigo y el rey aliado esta en esa misma trayectoria
+                            # entonces third se cumple
+                            if allay_pos_mov in enemy_possible[enemy_way] and allay_king.pos in enemy_possible[enemy_way]:
+                                third = True
+                                return check_var
+    return check_var
+
 
 def check(team):  # La funcion del Jaque y Jaquemate con un input de equipo
+    second = False
+    allay_pieces = board_functions.board_function.allay_pieces(team)
+    allay_king = allay_king_function(team, allay_pieces)
 
-    check = False
-    first = False
-    second = False # 4 boleanos, el principal es el check, si el check no se convierte a True no podra pasar por las condiciones para volver True a los otros
-    third = False  
-    
-    allay_pieces = menu.pieces.board.allay_pieces(team)
-    for piece in allay_pieces:  # Este for ira de pieza en pieza del equipo que incertes en la funcion
-
-        if isinstance(piece, menu.pieces.king) is True:
-
-            allay_king = piece  # Si la pieza es un rey, me almacenara ese objeto en una variable
-            break
-
-    for enemy_piece in menu.pieces.board.enemy_pieces(team):  # Este for ira de pieza en pieza del equipo enemigo que incertaste, si incertas white, el enemigo es black
+    for enemy_piece in board_functions.board_function.enemy_pieces(team):  # Este for ira de pieza en pieza del equipo enemigo que incertaste, si incertas white, el enemigo es black
         
         if isinstance(enemy_piece, menu.pieces.king) is True: # Si esa pieza es un rey entonces cedera
             continue
         
         enemy_possible = enemy_piece.possible_move()
-        for enemy_way in enemy_possible:  # Busca las trayectorias de la pieza
-            
-            if allay_king.pos in enemy_possible[enemy_way]:  # la condicion principal, si se cumple las otras pueden ser cumplidas, sino no
+        check_first_third(team, enemy_possible, allay_pieces, allay_king, enemy_piece)
 
-                check = True    # Si la posicion del rey aliado esta en los posibles movimientos de alguna pieza enemiga entonces es jaque
- 
-                for allay_piece in allay_pieces: # Un bucle que va de pieza en pieca enemiga
-
-                    if type(allay_piece) == menu.pieces.king: # Si esa pieza es un rey, cedera
-                        continue
-
-                    allay_possible = allay_piece.possible_move()
-                    
-                    for allay_way in allay_possible: # La trayectoria de esa pieza
-
-                        if enemy_piece.pos in allay_possible[allay_way]: # Si la posicion del enemigo que esta apuntando al rey esta en uno de los posibles moviemientos
-                                                                        # de un aliado entonces se cumple el first
-                            first = True
-
-                        for array_move in allay_possible[allay_way]:
-
-                            for allay_pos_mov in array_move:
-
-                                # Si el possible movimiento de un aliado esta en la trayectoria de un enemigo y el rey aliado esta en esa misma trayectoria
-                                # entonces third se cumple
-                                if allay_pos_mov in enemy_possible[enemy_way] and allay_king.pos in enemy_possible[enemy_way]:
-
-                                    third = True
-                                    break
-
-    if check is True:
+    if check_var is True:
 
         can = False
 
         for pos in allay_king.possible_move(): # Cada posible movimiento del rey
 
-            pos = [int(pos[1]), menu.pieces.board.positionY[pos[0]]]
+            pos = [int(pos[1]), board.board.positionY[pos[0]]]
 
-            if isinstance(menu.pieces.board.game_board[pos[0]][pos[1]], menu.pieces.piece) is False: # Si en algun posible movimiento del rey hay una pieza entonces
+            if isinstance(board.board.game_board[pos[0]][pos[1]], menu.pieces.piece) is False: # Si en algun posible movimiento del rey hay una pieza entonces
                 # second se cumple
                 can = True
                 break
 
-            elif isinstance(menu.pieces.board.game_board[pos[0]][pos[1]], menu.pieces.piece) is True and menu.pieces.board.game_board[pos[0]][pos[1]].team != team:
+            elif isinstance(board.board.game_board[pos[0]][pos[1]], menu.pieces.piece) is True and board.board.game_board[pos[0]][pos[1]].team != team:
                 # Si en algun posible movimiento del rey hay una pieza enemiga entonces second se cumple
                 can = True
                 break
 
         if can is True:
-
             second = True
 
-    if check is True and first is False and second is False and third is False: # si solo check es True entonces es jaquemate
+    if check_var is True and first is False and second is False and third is False: # si solo check es True entonces es jaquemate
 
         return "checkmate"
 
-    elif check is True and first is True or second is True or third is True: # si check y alguna otra variable boleana es True entonces es Jaque
+    elif check_var is True and first is True or second is True or third is True: # si check y alguna otra variable boleana es True entonces es Jaque
 
         return "check"
 
@@ -91,10 +94,12 @@ def check(team):  # La funcion del Jaque y Jaquemate con un input de equipo
 
         return
 
+
+
 def pieceSelected(): 
 
     print("It's the turn for the ", team[turn], " team")
-    menu.pieces.board.show()
+    board_functions.board_function.show()
     print("Select the position of the piece that you want to move: ")
     piece_select = input()
 
@@ -107,11 +112,13 @@ def pieceSelected():
 
     return piece_select
 
+
+
 def isPiece(piece):
 
     position_name = piece
-    piece = menu.pieces.board.game_board[int(
-        piece[1])][menu.pieces.board.positionY[piece[0]]] # Convierte la variable piece de un string al objeto que indicaste mediante posiciones
+    piece = board.board.game_board[int(
+        piece[1])][board.board.positionY[piece[0]]] # Convierte la variable piece de un string al objeto que indicaste mediante posiciones
 
     if isinstance(piece, menu.pieces.piece) is False: # Si la posicion que entraste no es una pieza entonces volvera atras para volver a elegir
 
@@ -126,10 +133,11 @@ def isPiece(piece):
     return piece, position_name
 
 
+
 def move_select(piece_selected, position_name, turn):
 
     print("It's the turn for the ", team[turn], " team") 
-    menu.pieces.board.show()
+    board_functions.board_function.show()
     print("You select a ", piece_selected.name, " in the positon ", position_name)
     print("Digit the position where you want to move it: (If you put 0 you can return to select another piece)")
     print(piece_selected.possible_move())
@@ -137,14 +145,15 @@ def move_select(piece_selected, position_name, turn):
     move_to = str(move_to)
 
     if move_to[0] in minus: # Lo mismo que arriba, si incertas una letra en minuscula lo convierte a mayuscula
-    move_to = chr(ord(move_to[0]) - 32) + move_to[1]
+        move_to = chr(ord(move_to[0]) - 32) + move_to[1]
 
     return move_to
 
 
+
 def is_it_possible(pos): # Funcion que retorna True o False dependiendo de si la posicion que le pones es posible en la matriz del board
 
-    for colum_string in menu.pieces.board.positionY:
+    for colum_string in board.board.positionY:
 
         for row_string in range(1, 9):
 
@@ -152,10 +161,10 @@ def is_it_possible(pos): # Funcion que retorna True o False dependiendo de si la
             string = colum_string + row_string
 
             if pos == string:
-
                 return True
 
     return False
+
 
 
 while True: # BASE LOOP (GAME LOOP)
@@ -167,88 +176,14 @@ while True: # BASE LOOP (GAME LOOP)
 
         menu.cls()
         print("The ", team[turn], " is checkmate, you lose")
-        menu.pieces.board.show()
+        board_functions.board_function.show()
         break
     
     elif check(team[turn]) == "check": # La condicion del jaque
 
         print("The ", team[turn], " is in check")
-lass pawn(piece):
-    # Hereda los atributos de equipo y posiciones
-    def __init__(self, pos, team, name):
-        super().__init__(pos, team, name)
-        self.first_turn = True
+    check_var, first, third = False, False, False
 
-    def possible_move(self):
-        # Movimientos posibles
-        dic = {"Forward": [], "Right": [], "Left": []}
-        pos = [int(self.pos[1]), board.positionY[self.pos[0]]]
-        move_RD, move_LD = False, False
-
-        # Verifica si el jugador usa fichas negras o blancas
-        if self.team == "black":
-            move_forward = pos
-            move_forward[0] += 1
-
-        elif self.team == "white":
-            move_forward = pos
-            move_forward[0] -= 1
-
-        # desplazamiento de las posiciones de las fichas
-        if pos[1] >= 1 and pos[1] < 8:
-            move_RD = [move_forward[0], move_forward[1] + 1]
-
-        if pos[1] > 1 and pos[1] <= 8:
-            move_LD = [move_forward[0], move_forward[1] - 1]
-
-        if isinstance(board.game_board[move_forward[0]][move_forward[1]], piece) is False:
-
-            dic["Forward"].append(self.positionY[move_forward[1]] + str(move_forward[0]))
-
-            # Verifica el primer movimiento de cada peon
-
-            if self.pos[1] == "2" and self.team == "black":
-                dic["Forward"].append(self.positionY[move_forward[1]] + str(move_forward[0] + 1))
-            elif self.pos[1] == "7" and self.team == "white":
-                dic["Forward"].append(self.positionY[move_forward[1]] + str(move_forward[0] - 1))
-
-        # Verifica el movimiento diagonal para poder comer o eliminar una ficha enemiga
-        if move_RD is not False:
-            # derecha
-
-            if isinstance(board.game_board[move_RD[0]][move_RD[1]], piece) is True:
-
-                dic["Right"].append(self.positionY[move_RD[1]] + str(move_RD[0]))
-
-        if move_LD is not False:
-            # Izquierda
-
-            if isinstance(board.game_board[move_LD[0]][move_LD[1]], piece) is True:
-
-                dic["Left"].append(self.positionY[move_LD[1]] + str(move_LD[0]))
-
-        return dic
-
-    def __str__(self):  # function para que no imprima en lenguaje maquina
-
-        if self.team == "white":
-            simbol = "♙"
-
-        else:
-            simbol = "♟"
-
-        return simbol
-    #     # A pawn move one step by one but in the exit it can do two step in one move.
-
-    def switch(self): # Funcion del peon para cambiar de pieza si llega a la base enemiga
-
-        if self.team == "white":
-
-            destination = 1
-
-        else:
-
-destination = 8
     piece_select = pieceSelected()
 
     if piece_select == False: # Si la posicion que escribiste no esta en la matriz entonces se repetira la seleccion de alguna pieza
@@ -271,6 +206,7 @@ destination = 8
             if check(team[turn]) == "check":
 
                 print("The ", team[turn], " is in check")
+            check_var, first, third = False, False, False
 
             move_to = move_select(piece_select, position_name, turn)
 
@@ -300,4 +236,4 @@ destination = 8
                     piece_select.move(move_to)
                     turn += 1
                     break
-    menu.cls()
+menu.cls()
